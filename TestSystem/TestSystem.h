@@ -3,6 +3,7 @@
 #include <math.h>
 #include <memory.h>
 #include <iostream>
+#include <locale.h>
 
 const int code = 0x2;
 

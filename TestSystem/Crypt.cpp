@@ -189,29 +189,72 @@ int createDbFiles(const char* fileNameQuests,const char* fileNameUsers, DBQuesti
 			fprintf(dbFileQ, "%d", 300);
 
 #ifdef con
-			printf_s("%d", 300);
+			printf_s("\n%d: \n%d",j, 300);
 #endif // con
 
-			fgets(buf, 300, files[i]);
+			if (i == 2 || i == 3) //arrays
+				fseek(files[i], 2, SEEK_CUR); 
+			else if(i == 4) // strings
+				fseek(files[i], 3, SEEK_CUR);
+
+			if (i == 4) { // strings
+				char c;
+				int k = 0;
+				while (c != '?') {
+					buf[k++] = fgetc(files[0]);
+				}
+					
+			}
+			else {
+				fgets(buf, 300, files[i]);
+				if (buf[0] == '.')
+					buf[0] = ' ';
+
+				int pos = strlen(buf);
+				buf[pos - 1] = 0;
+			}
+			
+
 			fwrite(buf, sizeof(char), 300, dbFileQ);
 #ifdef  con
 			printf_s("%s", buf);
 #endif //  con
 
-
-			// \n ?
 			for (int k = 0; k < 4; k++)
 			{
-				fseek(files[i], SEEK_CUR, 4);
+				int pos = ftell(files[i]);
+				
+				fseek(files[i], 2, SEEK_CUR);
 				fgets(buf, 300, files[i]);
+
+				pos = strlen(buf);
+				buf[pos - 1] = 0;
+
 				fwrite(buf, sizeof(char), 300, dbFileQ);
+#ifdef  con
+				printf_s("%s", buf);
+#endif
 			}
 
-			int rightQ;
-			fseek(files[i], SEEK_CUR, 8);
-			fscanf_s(files[i], "%d", &rightQ);
+			int rightQ = 0;
+
+			if (i == 2)
+				fseek(files[i], 1, SEEK_CUR);
+			else if(i == 3)
+				fseek(files[i], 8, SEEK_CUR);
+			else
+				fseek(files[i], 7, SEEK_CUR);
+
+			fscanf_s(files[i], "%c", &rightQ);
+			
+			rightQ -= int('a');
+			
 			fprintf(dbFileQ, "%d", rightQ);
-			fseek(files[i], SEEK_CUR, 2);
+#ifdef con
+			printf_s("%d", rightQ);
+#endif
+			fseek(files[i], 4, SEEK_CUR);
+			std::cout << std::endl;
 		}
 	}
 

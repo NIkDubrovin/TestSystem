@@ -17,6 +17,11 @@ int main()
 		* nameDbQuestions   = "dbQuestions.bin";
 	State state = MENU;
 
+	// LOCALE
+	setlocale(LC_ALL, "RUS");
+	system("chcp 1251");
+	
+
 	/*if (!toDecodeFile(nameDbQuestions, nameDbUsers, questions, users))
 		return 0;*/
 
