@@ -8,7 +8,7 @@ typedef struct Question
 {
 	int maxSymbols = 300;
 	char *text;
-	int Answer[4];
+	Answer answers[4];
 	int rightAnswer;
 } Question;
 
@@ -30,7 +30,6 @@ typedef struct User
 	char* password;
 } User;
 
-
 typedef struct Student
 {
 	User user;
@@ -42,8 +41,6 @@ typedef struct Student
 	float averageMark = 0;
 } Student;
 
-
-
 typedef struct DBQuestion
 {
 	const int countTopics = 8;
@@ -54,15 +51,15 @@ typedef struct DBUsers
 {
 	int maxSymbols = 20;
 	int countAdmins;
-	User* admins;
 	int countStudents;
+	User* admins;
 	Student* students;
 } DBUsers;
 
 
 // DB FUNCTIONS
-int toEncodeFile(const char* fQuests,const char* fUsers, DBQuestion* questions, DBUsers* users);
-int toDecodeFile(const char* fQuests,const char* fUsers, DBQuestion* questions, DBUsers* users);
+int toEncodeFile(const char* fQuests,const char* fUsers, DBQuestion& questions, DBUsers& users);
+int toDecodeFile(const char* fQuests,const char* fUsers, DBQuestion& questions, DBUsers& users);
 int fileOpen(char* nameFile);
 int createDbFiles(char* fQuests, char* fUsers, DBQuestion* questions, DBUsers* users);
 
