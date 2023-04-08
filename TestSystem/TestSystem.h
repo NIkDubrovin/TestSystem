@@ -4,6 +4,12 @@
 
 const int code = 0x2;
 
+
+typedef struct Answer
+{
+	char* text;
+} Answer;
+
 typedef struct Question
 {
 	int maxSymbols = 300;
@@ -12,10 +18,7 @@ typedef struct Question
 	int rightAnswer;
 } Question;
 
-typedef struct Answer
-{
-	char* text;
-} Answer;
+
 
 typedef struct Theme
 {
