@@ -1,8 +1,15 @@
 #include <stdio.h> 
 #include <stdlib.h>
 #include <math.h>
+#include <memory.h>
+#include <iostream>
 
 const int code = 0x2;
+
+typedef struct Answer
+{
+	char* text;
+} Answer;
 
 typedef struct Question
 {
@@ -12,10 +19,7 @@ typedef struct Question
 	int rightAnswer;
 } Question;
 
-typedef struct Answer
-{
-	char* text;
-} Answer;
+
 
 typedef struct Theme
 {
@@ -36,15 +40,15 @@ typedef struct Student
 	char* lastName;
 	char* firstName;
 
-	int marks[8] = { 0 };
+	int marks[8];
 	int finalMark = 0;
 	float averageMark = 0;
 } Student;
 
 typedef struct DBQuestion
 {
-	const int countTopics = 8;
-	Theme* topics;
+	const int countThemes = 8;
+	Theme* themes;
 } DBQuestion;
 
 typedef struct DBUsers
@@ -56,12 +60,12 @@ typedef struct DBUsers
 	Student* students;
 } DBUsers;
 
-
 // DB FUNCTIONS
 int toEncodeFile(const char* fQuests,const char* fUsers, DBQuestion& questions, DBUsers& users);
 int toDecodeFile(const char* fQuests,const char* fUsers, DBQuestion& questions, DBUsers& users);
 int fileOpen(char* nameFile);
-int createDbFiles(char* fQuests, char* fUsers, DBQuestion* questions, DBUsers* users);
+int createDbFiles(const char* fQuests,const char* fUsers, DBQuestion* questions, DBUsers* users);
+int createUser(User&, int);
 
 //  FUNCTIONS
 // return 0 - isnt founded

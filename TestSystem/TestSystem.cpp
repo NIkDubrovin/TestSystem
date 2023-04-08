@@ -17,8 +17,10 @@ int main()
 		* nameDbQuestions   = "dbQuestions.bin";
 	State state = MENU;
 
-	if (!toDecodeFile(nameDbQuestions, nameDbUsers, questions, users))
-		return 0;
+	/*if (!toDecodeFile(nameDbQuestions, nameDbUsers, questions, users))
+		return 0;*/
+
+	createDbFiles("dbQ.bin", "dbU.bin", &questions, &users);
 
 	switch (state)
 	{
@@ -36,7 +38,7 @@ int main()
 	}
 
 
-	if (!toEncodeFile(nameDbQuestions, nameDbUsers, &questions, &users))
+	if (!toEncodeFile(nameDbQuestions, nameDbUsers, questions, users))
 		return 0;
 
 
