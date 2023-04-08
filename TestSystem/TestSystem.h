@@ -24,11 +24,31 @@ typedef struct Theme
 	Question* questions;
 } Theme;
 
+typedef struct User
+{
+	char* login;
+	char* password;
+} User;
+
+
+typedef struct Student
+{
+	User user;
+	char* lastName;
+	char* firstName;
+
+	int marks[8] = { 0 };
+	int finalMark = 0;
+	float averageMark = 0;
+} Student;
+
+
+
 typedef struct DBQuestion
 {
 	const int countTopics = 8;
 	Theme* topics;
-} Question;
+} DBQuestion;
 
 typedef struct DBUsers
 {
@@ -39,31 +59,14 @@ typedef struct DBUsers
 	Student* students;
 } DBUsers;
 
-typedef struct Student
-{
-	User user;
-	char* lastName;
-	char* firstName;
-
-	int marks[8] = {0};
-	int finalMark = 0;
-	float averageMark = 0;
-} Student;
-
-typedef struct User
-{
-	char* login;
-	char* password;
-} User;
 
 // DB FUNCTIONS
-int toEncodeFile(char* fQuests, char* fUsers, DBQuestion* questions, DBUsers* users);
-int toDecodeFile(char* fQuests, char* fUsers, DBQuestion* questions, DBUsers* users);
+int toEncodeFile(const char* fQuests,const char* fUsers, DBQuestion* questions, DBUsers* users);
+int toDecodeFile(const char* fQuests,const char* fUsers, DBQuestion* questions, DBUsers* users);
 int fileOpen(char* nameFile);
 int createDbFiles(char* fQuests, char* fUsers, DBQuestion* questions, DBUsers* users);
 
-// TEACHERS FUNCTIONS
- 
+//  FUNCTIONS
 // return 0 - isnt founded
 // return 1 - teacher
 // return 2  - student
@@ -75,3 +78,4 @@ int trainingTheme(DBQuestion* questions);
 int testTheme(Student* student, DBQuestion* questions);
 int finalTest(Student* student, DBQuestion* questions);
 
+int inLogin();
