@@ -140,7 +140,7 @@ int fileOpen(char* nameFile)
 	return 0;
 }
 
-#define con 1;
+//#define con 0;
 
 int createDbFiles(const char* fileNameQuests,const char* fileNameUsers, DBQuestion* questions, DBUsers* users)
 {
@@ -192,18 +192,21 @@ int createDbFiles(const char* fileNameQuests,const char* fileNameUsers, DBQuesti
 			printf_s("\n%d: \n%d",j, 300);
 #endif // con
 
-			if (i == 2 || i == 3) //arrays
-				fseek(files[i], 2, SEEK_CUR); 
+			if (i == 2 || i == 3 || i == 7) //arrays// foreaches
+				fseek(files[i], 2, SEEK_CUR);
+			else if(i == 4 && j > 0)
+				fseek(files[i], 5, SEEK_CUR);
 			else if(i == 4) // strings
 				fseek(files[i], 3, SEEK_CUR);
 
 			if (i == 4) { // strings
-				char c;
 				int k = 0;
-				while (c != '?') {
-					buf[k++] = fgetc(files[0]);
-				}
-					
+				while (k < 300) {
+					buf[k] = fgetc(files[i]);
+					if (buf[k] == '?')
+						break;
+					k++;
+				} 
 			}
 			else {
 				fgets(buf, 300, files[i]);
@@ -213,7 +216,6 @@ int createDbFiles(const char* fileNameQuests,const char* fileNameUsers, DBQuesti
 				int pos = strlen(buf);
 				buf[pos - 1] = 0;
 			}
-			
 
 			fwrite(buf, sizeof(char), 300, dbFileQ);
 #ifdef  con
@@ -223,12 +225,31 @@ int createDbFiles(const char* fileNameQuests,const char* fileNameUsers, DBQuesti
 			for (int k = 0; k < 4; k++)
 			{
 				int pos = ftell(files[i]);
-				
-				fseek(files[i], 2, SEEK_CUR);
-				fgets(buf, 300, files[i]);
+				memset(buf, 0, 300);
 
-				pos = strlen(buf);
-				buf[pos - 1] = 0;
+				if (i == 4) {
+					if(k == 0)
+						fseek(files[i], 4, SEEK_CUR);
+					else 
+						fseek(files[i], 3, SEEK_CUR);
+
+					int k = 0;
+					char c = 0;
+					while (k < 300) {
+						c = fgetc(files[i]);
+						if (c == ' ' || c == '\n')
+							break;
+						buf[k] = c;
+						k++;
+					}
+				}
+				else {
+					fseek(files[i], 2, SEEK_CUR);
+					fgets(buf, 300, files[i]);
+
+					pos = strlen(buf);
+					buf[pos - 1] = 0;
+				}
 
 				fwrite(buf, sizeof(char), 300, dbFileQ);
 #ifdef  con
@@ -238,23 +259,48 @@ int createDbFiles(const char* fileNameQuests,const char* fileNameUsers, DBQuesti
 
 			int rightQ = 0;
 
-			if (i == 2)
+			if (i == 2 || i == 7)
 				fseek(files[i], 1, SEEK_CUR);
 			else if(i == 3)
 				fseek(files[i], 8, SEEK_CUR);
-			else
+			else if(i == 4)
+				fseek(files[i], 10, SEEK_CUR);
+			else if(i == 5 || i == 6)
+				fseek(files[i], 2, SEEK_CUR);
+			else 
 				fseek(files[i], 7, SEEK_CUR);
 
-			fscanf_s(files[i], "%c", &rightQ);
-			
+			if (i == 5 || i == 6)
+			{
+				int ansPos = 0;
+				if (i == 5)
+					ansPos = 5572;
+				else
+					ansPos = 3360;
+
+				int lastPos = ftell(files[i]);
+
+				fseek(files[i], ansPos + j * 3, SEEK_SET);
+				rightQ = fgetc(files[i]);
+				
+				fseek(files[i], lastPos, SEEK_SET);
+			} else 
+			{
+				fscanf_s(files[i], "%c", &rightQ);
+			}
+
 			rightQ -= int('a');
-			
+
 			fprintf(dbFileQ, "%d", rightQ);
 #ifdef con
 			printf_s("%d", rightQ);
-#endif
-			fseek(files[i], 4, SEEK_CUR);
+#endif	
+
+			if (i != 4 && i != 5 && i != 6)
+				fseek(files[i], 4, SEEK_CUR);
+#ifdef con
 			std::cout << std::endl;
+#endif
 		}
 	}
 

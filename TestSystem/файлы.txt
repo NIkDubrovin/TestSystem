@@ -178,8 +178,6 @@ b. fopen("file.txt", "w")
 c. fopen("file.txt", "wt")
 d. fopen("file.txt", "rb")
 
-Правильные ответы:
-
 b
 d
 c
