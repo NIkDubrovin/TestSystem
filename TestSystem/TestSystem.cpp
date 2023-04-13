@@ -13,19 +13,21 @@ int main()
 {
 	DBQuestion questions = { 0 };
 	DBUsers users{ 0 };
-	const char* nameDbUsers = "dbUsers.bin",
-		* nameDbQuestions   = "dbQuestions.bin";
+	const char* nameDbUsers = "dbU.db",
+		* nameDbQuestions   = "dbQ.db";
 	State state = MENU;
 
 	// LOCALE
 	setlocale(LC_ALL, "RUS");
 	system("chcp 1251");
 	
+	/*createDbFiles(nameDbQuestions, nameDbUsers);
+	readDBsFromFiles(nameDbUsers, nameDbQuestions, questions, users);*/
 
-	/*if (!toDecodeFile(nameDbQuestions, nameDbUsers, questions, users))
-		return 0;*/
+	if (!toDecodeFile(nameDbQuestions, nameDbUsers, questions, users))
+		return 0;
 
-	createDbFiles("dbQ.bin", "dbU.bin", &questions, &users);
+	printDBs(users, questions);
 
 	switch (state)
 	{
@@ -42,10 +44,10 @@ int main()
 		break;
 	}
 
-
 	if (!toEncodeFile(nameDbQuestions, nameDbUsers, questions, users))
 		return 0;
 
+	freeDBs(users, questions);
 
 	return 0;
 }

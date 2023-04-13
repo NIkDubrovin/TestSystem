@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Crypt.cpp" />
+    <ClCompile Include="DB.cpp" />
     <ClCompile Include="Student.cpp" />
     <ClCompile Include="Teacher.cpp" />
     <ClCompile Include="TestSystem.cpp" />

@@ -18,7 +18,7 @@
     <ClCompile Include="TestSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Crypt.cpp">
+    <ClCompile Include="DB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Teacher.cpp">

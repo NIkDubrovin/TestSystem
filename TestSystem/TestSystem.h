@@ -1,11 +1,11 @@
+#pragma once
 #include <stdio.h> 
 #include <stdlib.h>
 #include <math.h>
-#include <memory.h>
 #include <iostream>
 #include <locale.h>
 
-const int code = 0x2;
+const int code = 0x10;
 
 typedef struct Answer
 {
@@ -14,17 +14,14 @@ typedef struct Answer
 
 typedef struct Question
 {
-	int maxSymbols = 300;
 	char *text;
 	Answer answers[4];
 	int rightAnswer;
 } Question;
 
-
-
 typedef struct Theme
 {
-	char name[15];
+	char *name;
 	int countQuestions;
 	Question* questions;
 } Theme;
@@ -48,13 +45,12 @@ typedef struct Student
 
 typedef struct DBQuestion
 {
-	const int countThemes = 8;
+	int countThemes = 8;
 	Theme* themes;
 } DBQuestion;
 
 typedef struct DBUsers
 {
-	int maxSymbols = 20;
 	int countAdmins;
 	int countStudents;
 	User* admins;
@@ -62,11 +58,22 @@ typedef struct DBUsers
 } DBUsers;
 
 // DB FUNCTIONS
-int toEncodeFile(const char* fQuests,const char* fUsers, DBQuestion& questions, DBUsers& users);
-int toDecodeFile(const char* fQuests,const char* fUsers, DBQuestion& questions, DBUsers& users);
-int fileOpen(char* nameFile);
-int createDbFiles(const char* fQuests,const char* fUsers, DBQuestion* questions, DBUsers* users);
+int toEncodeFile(const char* fileNameQues, const char* fileNameUsers, const DBQuestion& questions, const DBUsers& users);
+int toDecodeFile(const char* fileNameQues,const char* fileNameUsers, DBQuestion& questions, DBUsers& users);
+int createDbFiles(const char* fileNameQues,const char* fileNameUsers);
 int createUser(User&, int);
+void randStr(char* buf, int count, int startC, int endC);
+char* readStringFromFileToBuffer(FILE* file, char* buf);
+char* readStringFromBuffer(char** buf);
+void freeDBs(const DBUsers& users,const DBQuestion& questions);
+void printDBs(const DBUsers& users, const DBQuestion& questions);
+int readDBsFromFiles(const char* fileNameUsers, const char* fileNameQuests, DBQuestion& questions, DBUsers& users);
+int readDBsFromBuffers(const char* bufUsers, int sizeBufUsers, DBUsers& users, const char* bufQuests, int sizeBufQuests, DBQuestion& questions);
+int DBsToBuffers(char** bufQuests, int* sizeQuests, char** bufUsers, int* sizeUsers, const DBQuestion& questions,const DBUsers& users);
+int writeDBsFromBuffers(const char* fileNameUsers, char* bufUsers, int sizeBufUsers, const DBUsers& users, const char* fileNameQuests, char* bufQuests, int sizeBufQuests, const DBQuestion& questions);
+void printBuffer(const char* buf, int size, const char* type);
+int sizesDBs(int* sizeDBUsers, int* sizeDBQues, DBQuestion& questions, DBUsers& users);
+void debug(const char*);
 
 //  FUNCTIONS
 // return 0 - isnt founded
