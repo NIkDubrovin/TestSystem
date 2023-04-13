@@ -21,10 +21,7 @@ int toEncodeFile(const char* fileNameQues, const char* fileNameUsers, const DBQu
 	if (!writeDBsFromBuffers(fileNameUsers, bufUsers, sizeBufUsers, users, fileNameQues, bufQues, sizeBufQues, questions))
 		return 0;
 
-#if 0		// TODO HEAP IS CORRUPTED!!!!!!!!
 	free(bufUsers);
-#endif
-
 	free(bufQues);
 
     return 1;
@@ -125,8 +122,9 @@ int DBsToBuffers(char** bufQuests, int* sizeQuests, char** bufUsers, int *sizeUs
 	// ADMINS
 	for (int i = 0; i < users.countAdmins; i++)
 	{
+		
 		User& user = users.admins[i];
-		sprintf_s((buf + pos), size, "%s%c%s", user.login, 0, user.password);
+		sprintf_s((buf + pos), size - pos, "%s%c%s", user.login, 0, user.password);
 		pos += ((strlen(user.login) + strlen(user.password) + 2));
 	}
 
@@ -135,6 +133,7 @@ int DBsToBuffers(char** bufQuests, int* sizeQuests, char** bufUsers, int *sizeUs
 	{
 		Student& st = users.students[i];
 		sprintf_s((buf + pos), size - pos, "%s%c%s%c%s%c%s", st.user.login, 0, st.user.password,0, st.lastName, 0, st.firstName);
+
 
 		pos += (strlen(st.user.login) + strlen(st.user.password)
 			+ strlen(st.lastName) + strlen(st.firstName) + 4);
