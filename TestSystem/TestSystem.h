@@ -105,3 +105,10 @@ void clearScreen();
 unsigned char isCorrectInput();
 void debug(const char*);
 
+void TeacherMain(DBUsers& Dbusers, Theme& theme);
+int add_student(Student& student);
+int del_student(Student& student);
+int changeProgress_student(DBUsers& use, Theme& theme);
+void outputStudents(DBUsers& use, Theme& theme);
+void Filtr(DBUsers & use, Theme& theme);
+void Sorted(Student& student, Theme& theme);
