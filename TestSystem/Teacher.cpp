@@ -1,20 +1,19 @@
 #include "TestSystem.h"
 using namespace std;
 
-void TeacherMain()
+void TeacherMain(DBUsers& Dbusers, DBUsers& use)
 {
-	system("chcp1251");
-
-
 	int choice = 0, choice1 = 0, choice2 = 0;
-	std::cout << "Редактирование вопросов.\n1 - Удаление вопросов\n2 - Добавление вопросов\n3 - Изменение вопросов\nВведите номер желаемого действия: "; std::cin >> choice1;
+	std::cout << "Редактирование вопросов.\n1 - Удаление вопросов\n2 - Добавление вопросов\n3 - Изменение вопросов\nВведите номер желаемого действия: "; 
+	std::cin >> choice1;
 
 	switch (choice)
 	{
 	case 1:
 	{
 		//Question
-		std::cout << "Редактирование вопросов.\n1 - Удаление вопросов\n2 - Добавление вопросов\n3 - Изменение вопросов\nВведите номер желаемого действия: "; std::cin >> choice1;
+		std::cout << "Редактирование вопросов.\n1 - Удаление вопросов\n2 - Добавление вопросов\n3 - Изменение вопросов\nВведите номер желаемого действия: ";
+		std::cin >> choice1;
 		switch (choice1)
 		{
 		case 1:
@@ -48,7 +47,7 @@ void TeacherMain()
 			Student student;
 			DBUsers Dbusers;
 			int various = 3;
-			DBUsers use;
+			DBUsers use = {  };
 			do
 			{
 				cout << "1 - Добавление нового студента\n2 - Удаление студента\n0 - Выход\nВведите номер желаемой операции: ";
@@ -103,7 +102,7 @@ void TeacherMain()
 		case 2:
 		{
 			//change progress
-			DBUsers use;
+			DBUsers use = {};
 			Student student;
 			int changeMark = 0;
 			int chooseStudent = 0, chooseTheme = 0;
@@ -114,7 +113,7 @@ void TeacherMain()
 
 			}
 			cout << "Выберете стуента для которого хотите изменить оценку: "; cin >> chooseStudent;
-			Theme theme;
+			Theme theme = {};
 			for (int i = 0; i < 8; i++)
 			{
 				cout << theme.name[i] << "\t" << use.students[chooseStudent].marks[i] << endl;
@@ -128,8 +127,8 @@ void TeacherMain()
 		case 3:
 		{
 			//input spisok students
-			DBUsers use;
-			Student student; Theme theme;
+			DBUsers use = {};
+			Student student; Theme theme = {};
 			int chooseTheme = 0, chooseTheme1 = 0;
 			cout << "1 - По всем темам\n2 - По конкретной теме\n3 - Только итоговый тест\n4 -Только средний балл\n0 - Выход\nВыберете вариант вывода: "; cin >> chooseTheme;
 			do {
@@ -184,8 +183,8 @@ void TeacherMain()
 		break;
 		case 4:
 		{
-			DBUsers use;
-			Student student; Theme theme;
+			DBUsers use = {};
+			Student student = {}; Theme theme = {};
 			double mark_choice = 0, num_out = 0;
 			int num_theme = 0;
 			cout << "Введите нужную оценку для поиска: ";

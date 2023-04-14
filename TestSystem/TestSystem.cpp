@@ -20,6 +20,8 @@ int main()
 		return 0;
 	}
 
+	printDBs(users, questions);
+
 	while (state != EXIT)
 	{
 		switch (state)

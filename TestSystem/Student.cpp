@@ -1,5 +1,4 @@
 #include "TestSystem.h"
-#include "Student.h"
 
 using namespace std;
 #define lenmas 100
