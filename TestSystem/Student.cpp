@@ -51,9 +51,9 @@ int trainingTheme(DBQuestion& DBquestions)
 	int randomQuest;
 	do
 	{
-		cout << "Выберите тему: \n1 - Циклы\n2 - Массивы(одномерные и двумерные)\n3 - Строки\n4 - Рекурсия\n5 - Структуры\n6 - Файлы\n7 - Адреса и указатели\n8 - Динамическая память\n";
+		cout << "Выберите тему: \n1 - Адреса и указатели\n2 - Динамическая память\n3 - Массивы\n4 - Рекурсия\n5 - Строки\n6 - Структуры\n7 - Файлы\n8 - Циклы\n";
 		cin >> selecttheme;
-	} while (selecttheme < 1 && selecttheme >8);
+	} while (selecttheme < 1 || selecttheme >8);
 	cout << "Выбранная тема: \n" << DBquestions.themes[selecttheme].name << endl;
 	
 	int answer = 0; int complete = 0;
@@ -231,14 +231,14 @@ int finalTest(DBUsers& users, DBQuestion& DBquestions)
 	return 0;
 }
 
-void StudentMenu(DBUsers& users,DBQuestion& questions)
+int StudentMenu(DBUsers& users,DBQuestion& questions)
 {
 	int k = 0;
 	
 	int choose = -2;
 	do
 	{
-		cout << "Выберите: \n1 - Тренинг по выбранной вами теме\n2 - Тест по выбранной вами теме\n3 - Итоговый тест\n";
+		cout << "Выберите: \n1 - Тренинг по выбранной вами теме\n2 - Тест по выбранной вами теме\n3 - Итоговый тест\noher - exit\n";
 		cin >> choose;
 	} while (choose != 1 && choose != 2 && choose != 3);
 
@@ -258,5 +258,9 @@ void StudentMenu(DBUsers& users,DBQuestion& questions)
 	{
 		finalTest(users, questions);
 	}
+	default:
+	{
+		return 0;
+	}break;
 	}
 }

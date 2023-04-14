@@ -96,7 +96,7 @@ int inLogin(STATE& state, DBUsers& users, int& id);
 int editQuestions(DBQuestion* qs);
 int workDBStudents(DBUsers* dbUsers);
 
-void StudentMenu(DBUsers& users, DBQuestion& questions);
+int StudentMenu(DBUsers& users, DBQuestion& questions);
 int trainingTheme(DBQuestion* questions);
 int testTheme(Student* student, DBQuestion* questions);
 int finalTest(Student* student, DBQuestion* questions);

@@ -667,7 +667,6 @@ int createDbFiles(const char* fileNameQuests,const char* fileNameUsers)
 		"файлы.txt",
 		"адреса и указатели.txt",
 		"динамическа€ пам€ть.txt",
-
 	};
 
 	if (fopen_s(&dbFileQ, fileNameQuests, "w+b") != 0) {
