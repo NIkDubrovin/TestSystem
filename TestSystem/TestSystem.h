@@ -57,14 +57,6 @@ typedef struct DBUsers
 	Student* students;
 } DBUsers;
 
-typedef enum STATE
-{
-	MENU,
-	TEACHER,
-	STUDENT,
-	EXIT
-} STATE;
-
 // DB FUNCTIONS
 int toEncodeFile(const char* fileNameQues, const char* fileNameUsers, const DBQuestion& questions, const DBUsers& users);
 int toDecodeFile(const char* fileNameQues,const char* fileNameUsers, DBQuestion& questions, DBUsers& users);
@@ -81,16 +73,14 @@ int DBsToBuffers(char** bufQuests, int* sizeQuests, char** bufUsers, int* sizeUs
 int writeDBsFromBuffers(const char* fileNameUsers, char* bufUsers, int sizeBufUsers, const DBUsers& users, const char* fileNameQuests, char* bufQuests, int sizeBufQuests, const DBQuestion& questions);
 void printBuffer(const char* buf, int size, const char* type);
 int sizesDBs(int* sizeDBUsers, int* sizeDBQues, DBQuestion& questions, DBUsers& users);
-
+void debug(const char*);
+void StudentMenu(DBUsers& users,DBQuestion& questions);
 
 //  FUNCTIONS
-
-// return -1 - isnt founded
-// return 0 - teacher
-// return 1  - student
-int checkUser(User& user, DBUsers& users, int&);
-
-int inLogin(STATE& state, DBUsers& users, int& id);
+// return 0 - isnt founded
+// return 1 - teacher
+// return 2  - student
+int checkUser(User* user, DBUsers* users);
 int editQuestions(DBQuestion* qs);
 int workDBStudents(DBUsers* dbUsers);
 
@@ -98,7 +88,4 @@ int trainingTheme(DBQuestion* questions);
 int testTheme(Student* student, DBQuestion* questions);
 int finalTest(Student* student, DBQuestion* questions);
 
-void clearScreen();
-unsigned char isCorrectInput();
-void debug(const char*);
-
+int inLogin();

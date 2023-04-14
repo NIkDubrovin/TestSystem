@@ -54,23 +54,28 @@ int trainingTheme(DBQuestion& DBquestions)
 	do
 	{
 		cout << "Выберите тему: \n1 - Циклы\n2 - Массивы(одномерные и двумерные)\n3 - Строки\n4 - Рекурсия\n5 - Структуры\n6 - Файлы\n7 - Адреса и указатели\n8 - Динамическая память\n";
+		cin >> selecttheme;
 	} while (selecttheme < 1 && selecttheme >8);
 	cout << "Выбранная тема: \n" << DBquestions.themes[selecttheme].name << endl;
+	
 	int answer = 0; int complete = 0;
 	for (int i = 0; i < 10; ++i)
 	{
 		do {
-			randomQuest = rand() % DBquestions.themes[selecttheme].countQuestions;
+			randomQuest = rand() % DBquestions.themes[selecttheme].countQuestions-1;
 		} while (!IsUniqNumbers(UniqNumbers, randomQuest, m));
 		//вывод вопроса
-		cout << "Вопрос №" << i + 1 << " :" << endl << DBquestions.themes[selecttheme].questions[randomQuest].text;
+		cout << "Вопрос №" << i + 1 << " :" << endl << DBquestions.themes[selecttheme].questions[randomQuest].text<<endl;
 		//вывод ответов
-		for (int j = 0; j < 4; ++j) cout << i + 1 << " :" << DBquestions.themes[selecttheme].questions[randomQuest].answers[j].text << endl;
+		for (int j = 0; j < 4; ++j) cout << j + 1 << " :" << DBquestions.themes[selecttheme].questions[randomQuest].answers[j].text << endl;
 		do
 		{
-			cout << "Выберите правильный ответ цифрой от 1 до 4";
+			do{
+			cout << "Выберите правильный ответ цифрой от 1 до 4: ";
 			cin >> answer;
-		} while ((answer != 1 && answer != 2 && answer != 3 && answer != 4) && (answer != DBquestions.themes[selecttheme].questions[randomQuest].rightAnswer));
+			} while ((answer != 1 && answer != 2 && answer != 3 && answer != 4));
+			answer -= 1;
+		} while ((answer != (DBquestions.themes[selecttheme].questions[randomQuest].rightAnswer)));
 
 
 	}
@@ -78,7 +83,7 @@ int trainingTheme(DBQuestion& DBquestions)
 	return 1;
 }
 
-int TestTheme(DBQuestion& DBquestions)
+int TestTheme(DBUsers& users,DBQuestion& DBquestions)
 {
 	srand(time(NULL));
 	int UniqNumbers[lenmas];
@@ -87,23 +92,27 @@ int TestTheme(DBQuestion& DBquestions)
 	do
 	{
 		cout << "Выберите тему: \n1 - Циклы\n2 - Массивы(одномерные и двумерные)\n3 - Строки\n4 - Рекурсия\n5 - Структуры\n6 - Файлы\n7 - Адреса и указатели\n8 - Динамическая память\n";
-	} while (selecttheme < 1 && selecttheme >8);
+		cin >> selecttheme;
+		} while (selecttheme < 1 && selecttheme >8);
+		selecttheme -= 1;
 	cout << "Выбранная тема: \n" << DBquestions.themes[selecttheme].name << endl;
 	int answer = 0; int complete = 0;
 	for (int i = 0; i < 10; ++i)
 	{
 		do {
-			randomQuest = rand() % DBquestions.themes[selecttheme].countQuestions;
+			randomQuest = rand() % DBquestions.themes[selecttheme].countQuestions - 1;
 		} while (!IsUniqNumbers(UniqNumbers, randomQuest,m));
 		//вывод вопроса
-		cout << "Вопрос №" << i + 1 << " :" << endl << DBquestions.themes[selecttheme].questions[randomQuest].text;
+		cout << "Вопрос №" << i + 1 << " :" << endl << DBquestions.themes[selecttheme].questions[randomQuest].text<<endl;
 		//вывод ответов
-		for (int j = 0; j < 4; ++j) cout << i + 1 << " :" << DBquestions.themes[selecttheme].questions[randomQuest].answers[j].text << endl;
+		for (int j = 0; j < 4; ++j) cout << j + 1 << " :" << DBquestions.themes[selecttheme].questions[randomQuest].answers[j].text << endl;
 		do
 		{
-			cout << "Выберите правильный ответ цифрой от 1 до 4";
+			cout << "Выберите правильный ответ цифрой от 1 до 4: ";
 			cin >> answer;
+			
 		} while (answer != 1 && answer != 2 && answer != 3 && answer != 4);
+		answer -= 1;
 		if(answer == DBquestions.themes[selecttheme].questions[randomQuest].rightAnswer)complete++;
 		else
 		{
@@ -113,57 +122,13 @@ int TestTheme(DBQuestion& DBquestions)
 
 
 	}
-	cout << "Количество правильных ответов: " << complete << " из 10\n";
+	cout << "Количество правильных ответов: " << complete << " из 10\n\n";
+	cout << "Разберем ошибки: \n";
 	for (int n = 0; n < k; n++)
 	{
-		cout << "Разберем ошибки: \n";
-		cout << "Вопрос №" << wrong[n] << " :" << endl << DBquestions.themes[selecttheme].questions[randomQuest].text;
-		cout << "Верный ответ: " << DBquestions.themes[selecttheme].questions[randomQuest].rightAnswer;
-	}
-	return 1;
-}
-
-int TestTheme(Student* student, DBQuestion& DBquestions)
-{
-	srand(time(NULL));
-	int UniqNumbers[lenmas];
-	int selecttheme = -2; int wrong[10] = { 0 }; int k = 0; int m = 0;
-	int randomQuest;
-	do
-	{
-		cout << "Выберите тему: \n1 - Циклы\n2 - Массивы(одномерные и двумерные)\n3 - Строки\n4 - Рекурсия\n5 - Структуры\n6 - Файлы\n7 - Адреса и указатели\n8 - Динамическая память\n";
-	} while (selecttheme < 1 && selecttheme >8);
-	cout << "Выбранная тема: \n" << DBquestions.themes[selecttheme].name << endl;
-	int answer = 0; int complete = 0;
-	for (int i = 0; i < 10; ++i)
-	{
-		do {
-			randomQuest = rand() % DBquestions.themes[selecttheme].countQuestions;
-		} while (!IsUniqNumbers(UniqNumbers, randomQuest,m));
-		//вывод вопроса
-		cout << "Вопрос №" << i + 1 << " :" << endl << DBquestions.themes[selecttheme].questions[randomQuest].text;
-		//вывод ответов
-		for (int j = 0; j < 4; ++j) cout << i + 1 << " :" << DBquestions.themes[selecttheme].questions[randomQuest].answers[j].text << endl;
-		do
-		{
-			cout << "Выберите правильный ответ цифрой от 1 до 4";
-			cin >> answer;
-		} while (answer != 1 && answer != 2 && answer != 3 && answer != 4);
-		if (answer == DBquestions.themes[selecttheme].questions[randomQuest].rightAnswer)complete++;
-		else
-		{
-			wrong[k] = i;
-			k++;
-		}
-
-
-	}
-	cout << "Количество правильных ответов: " << complete << " из 10\n";
-	for (int n = 0; n < k; n++)
-	{
-		cout << "Разберем ошибки: \n";
-		cout << "Вопрос №" << wrong[n] << " :" << endl << DBquestions.themes[selecttheme].questions[randomQuest].text;
-		cout << "Верный ответ: " << DBquestions.themes[selecttheme].questions[randomQuest].rightAnswer;
+		
+		cout << "Вопрос №" << wrong[n]+1 << " :" << endl << DBquestions.themes[selecttheme].questions[n].text<<endl;
+		cout << "Верный ответ: " << DBquestions.themes[selecttheme].questions[n].rightAnswer<<endl;
 	}
 	double res = (10 - k) / 10;
 	int lastres;
@@ -190,12 +155,11 @@ int TestTheme(Student* student, DBQuestion& DBquestions)
 		lastres = 2;
 		cout << endl << "Ваша оценка 2";
 	}
-	student->marks[selecttheme-1] = lastres;
-
-	return 0;
+	users.students->marks[selecttheme] = lastres;
+	return 1;
 }
 
-int finalTest(Student* student, DBQuestion& DBquestions)
+int finalTest(DBUsers& users, DBQuestion& DBquestions)
 {
 	randQuestForFinalTest randomfintest[50];
 	srand(time(NULL));
@@ -262,12 +226,12 @@ int finalTest(Student* student, DBQuestion& DBquestions)
 		lastres = 2;
 		cout << endl << "Ваша оценка 2";
 	}
-	student->finalMark = lastres;
+	users.students->finalMark = lastres;
 
 	return 0;
 }
 
-void StudentMenu(DBQuestion& questions)
+void StudentMenu(DBUsers& users,DBQuestion& questions)
 {
 	int k = 0;
 	
@@ -287,12 +251,12 @@ void StudentMenu(DBQuestion& questions)
 	}break;
 	case 2:
 	{
-		TestTheme(questions);
+		TestTheme(users,questions);
 
 	}break;
 	case 3:
 	{
-
+		finalTest(users, questions);
 	}
 	}
 }
