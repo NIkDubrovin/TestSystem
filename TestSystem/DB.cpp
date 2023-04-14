@@ -659,14 +659,15 @@ int createDbFiles(const char* fileNameQuests,const char* fileNameUsers)
 	FILE* dbFileQ = nullptr, * dbFileUsers = nullptr;
 	FILE* files[8] = {0};
 	const char* names[8] = {
-		"адреса и указатели.txt",
-		"динамическая память.txt",
+		"циклы.txt"
 		"массивы.txt",
-		"рекурсия.txt",
 		"строки.txt",
+		"рекурсия.txt",
 		"структуры.txt",
 		"файлы.txt",
-		"циклы.txt"
+		"адреса и указатели.txt",
+		"динамическая память.txt",
+
 	};
 
 	if (fopen_s(&dbFileQ, fileNameQuests, "w+b") != 0) {

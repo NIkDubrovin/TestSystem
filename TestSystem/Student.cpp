@@ -61,7 +61,7 @@ int trainingTheme(DBQuestion& DBquestions)
 	{
 		do {
 			randomQuest = rand() % DBquestions.themes[selecttheme].countQuestions-1;
-		} while (!IsUniqNumbers(UniqNumbers, randomQuest, m));
+		} while (!IsUniqNumbers(UniqNumbers, randomQuest, m) || (randomQuest == -1 ));
 		//вывод вопроса
 		cout << "Вопрос №" << i + 1 << " :" << endl << DBquestions.themes[selecttheme].questions[randomQuest].text<<endl;
 		//вывод ответов
@@ -99,7 +99,7 @@ int TestTheme(DBUsers& users,DBQuestion& DBquestions)
 	{
 		do {
 			randomQuest = rand() % DBquestions.themes[selecttheme].countQuestions - 1;
-		} while (!IsUniqNumbers(UniqNumbers, randomQuest,m));
+		} while (!IsUniqNumbers(UniqNumbers, randomQuest,m) || (randomQuest == -1));
 		//вывод вопроса
 		cout << "Вопрос №" << i + 1 << " :" << endl << DBquestions.themes[selecttheme].questions[randomQuest].text<<endl;
 		//вывод ответов
@@ -114,7 +114,7 @@ int TestTheme(DBUsers& users,DBQuestion& DBquestions)
 		if(answer == DBquestions.themes[selecttheme].questions[randomQuest].rightAnswer)complete++;
 		else
 		{
-			wrong[k] = i;
+			wrong[k] = randomQuest;
 			k++;
 		}
 
@@ -125,33 +125,33 @@ int TestTheme(DBUsers& users,DBQuestion& DBquestions)
 	for (int n = 0; n < k; n++)
 	{
 		
-		cout << "Вопрос №" << wrong[n]+1 << " :" << endl << DBquestions.themes[selecttheme].questions[n].text<<endl;
-		cout << "Верный ответ: " << DBquestions.themes[selecttheme].questions[n].rightAnswer<<endl;
+		cout << "Вопрос №" << n +1<< " :" << endl << DBquestions.themes[selecttheme].questions[wrong[k]].text<<endl;
+		cout << "Верный ответ: " << DBquestions.themes[selecttheme].questions[wrong[k]].rightAnswer+1<<endl;
 	}
-	double res = (10 - k) / 10;
+	double res = double(complete) / 10;
 	int lastres;
 	if (res >= 0.95)
 	{
 		lastres = 5;
-		cout << endl << "Ваша оценка 5";
+		cout << endl << "Ваша оценка 5\n";
 	}
 
 	if (res >= 0.70)
 	{
 		lastres = 4;
-		cout << endl << "Ваша оценка 4";
+		cout << endl << "Ваша оценка 4\n";
 	}
 
 	if (res >= 0.50)
 	{
 		lastres = 3;
-		cout << endl << "Ваша оценка 3";
+		cout << endl << "Ваша оценка 3\n";
 	}
 
 	if (res <= 0.49)
 	{
 		lastres = 2;
-		cout << endl << "Ваша оценка 2";
+		cout << endl << "Ваша оценка 2\n";
 	}
 	users.students->marks[selecttheme] = lastres;
 	return 1;
@@ -163,66 +163,68 @@ int finalTest(DBUsers& users, DBQuestion& DBquestions)
 	srand(time(NULL));
 	int UniqNumbersQuest[lenmas];
 	int UniqNumbersThemeAndQuest[lenmas];
-	int randomTheme = 0;
-	int selecttheme = -2; int wrong[10] = { 0 }; int k = 0; int m = 0;
+	 int wrongQuest[45] = { 0 }; int k = 0; int m = 0;
+	 int wrongTheme[45] = { 0 };
 	int randomQuest = 0;
 	int answer = 0; int complete = 0;
 	for (int i = 0; i < 40; ++i)
 	{
 		do{
-		randomfintest->randTheme = rand() % 8;
-		randomfintest->randQuest = rand() % DBquestions.themes[randomfintest->randTheme].countQuestions;
-		} while (!IsUniqRandomNumbersForFinalTest(randomfintest, randomfintest->randQuest, randomfintest->randTheme, m));
+		randomfintest->randTheme = (rand() % 8) - 1;
+		randomfintest->randQuest = (rand() % DBquestions.themes[randomfintest->randTheme].countQuestions) - 1;
+		} while (!IsUniqRandomNumbersForFinalTest(randomfintest, randomfintest->randQuest, randomfintest->randTheme, m) && ((randomfintest->randQuest == -1) || (randomfintest->randTheme == -1)));
 		//вывод вопроса
-		cout << "Вопрос №" << i + 1 << " :" << endl << DBquestions.themes[randomfintest->randTheme].name;
-		cout << "Вопрос №" << i + 1 << " :" << endl << DBquestions.themes[randomfintest->randTheme].questions[randomfintest->randQuest].text;
+		cout << "Тема"<<" :" << endl << DBquestions.themes[randomfintest->randTheme].name<<endl;
+		cout << "Вопрос №" << i + 1 << " :" << endl << DBquestions.themes[randomfintest->randTheme].questions[randomfintest->randQuest].text<<endl;
 		//вывод ответов
-		for (int j = 0; j < 4; ++j) cout << i + 1 << " :" << DBquestions.themes[selecttheme].questions[randomQuest].answers[j].text << endl;
+		for (int j = 0; j < 4; ++j) cout << j + 1 << " :" << DBquestions.themes[randomfintest->randTheme].questions[randomfintest->randQuest].answers[j].text << endl;
 		do
 		{
-			cout << "Выберите правильный ответ цифрой от 1 до 4";
+			cout << "Выберите правильный ответ цифрой от 1 до 4: ";
 			cin >> answer;
 		} while (answer != 1 && answer != 2 && answer != 3 && answer != 4);
-		if (answer == DBquestions.themes[selecttheme].questions[randomQuest].rightAnswer)complete++;
+		if (answer == DBquestions.themes[randomfintest->randTheme].questions[randomfintest->randQuest].rightAnswer)complete++;
 		else
 		{
-			wrong[k] = i;
+			wrongTheme[k] = randomfintest->randTheme;
+			wrongQuest[k] = randomfintest->randQuest;
 			k++;
 		}
 
 
 	}
-	cout << "Количество правильных ответов: " << complete << " из 10\n";
+	cout << "Разберем ошибки: \n";
+	cout << "Количество правильных ответов: " << complete << " из 40\n";
 	for (int n = 0; n < k; n++)
 	{
-		cout << "Разберем ошибки: \n";
-		cout << "Вопрос №" << wrong[n] << " :" << endl << DBquestions.themes[selecttheme].questions[randomQuest].text;
-		cout << "Верный ответ: " << DBquestions.themes[selecttheme].questions[randomQuest].rightAnswer;
+		
+		cout << "Вопрос №" << n + 1 << " :" << endl << DBquestions.themes[wrongTheme[n]].questions[wrongQuest[n]].text << endl;
+		cout << "Верный ответ: " << DBquestions.themes[wrongTheme[n]].questions[wrongQuest[n]].rightAnswer+1 <<endl;
 	}
-	double res = (10 - k) / 10;
+	double res = double(complete) / 40;
 	int lastres;
 	if (res >= 0.95)
 	{
 		lastres = 5;
-		cout << endl << "Ваша оценка 5";
+		cout << endl << "Ваша оценка 5\n";
 	}
 
 	if (res >= 0.70)
 	{
 		lastres = 4;
-		cout << endl << "Ваша оценка 4";
+		cout << endl << "Ваша оценка 4\n";
 	}
 
 	if (res >= 0.50)
 	{
 		lastres = 3;
-		cout << endl << "Ваша оценка 3";
+		cout << endl << "Ваша оценка 3\n";
 	}
 
 	if (res <= 0.49)
 	{
 		lastres = 2;
-		cout << endl << "Ваша оценка 2";
+		cout << endl << "Ваша оценка 2\n";
 	}
 	users.students->finalMark = lastres;
 
