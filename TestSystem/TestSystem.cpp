@@ -33,7 +33,7 @@ int main()
 			}
 			break;
 		case TEACHER:
-
+			TeacherMain(users, questions);
 			break;
 		case STUDENT:
 			StudentMenu(users, questions);
