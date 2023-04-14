@@ -15,28 +15,46 @@ int changeProgress_student(DBUsers & use, DBQuestion & question)
 	cout << "Список студентов" << endl;
 	for (int i = 0; i < use.countStudents; i++)
 	{
-		cout << i << " " << use.students[i].lastName << " " << use.students[i].firstName << endl;
+		cout << i + 1 << " - " << use.students[i].lastName << " " << use.students[i].firstName << endl;
 	}
 	cout << "Выберете студента для которого хотите изменить оценку: "; cin >> chooseStudent;
 	while (!isCorrectInput())
 	{
 		cin >> chooseStudent;
 	}
+	while (chooseStudent > use.countStudents && chooseStudent < 1)
+	{
+		cout << "Такого студента нет. Выберите студента для которого хотите изменить оценку: "; cin >> chooseStudent;
+		while (!isCorrectInput())
+		{
+			cin >> chooseStudent;
+		}
+	}
+	chooseStudent--;
 	for (int i = 0; i < 8; i++)
 	{
-		cout << question.themes[i].name << "\t" << use.students[chooseStudent].marks[i] << endl;
+		cout<< i+1 << " - " << question.themes[i].name << "\t" << use.students[chooseStudent].marks[i] << endl;
 	}
-	cout << "Выберете тему для изменения прогресса: "; cin >> chooseTheme;
+	cout << "Выберите тему для изменения прогресса: "; cin >> chooseTheme;
 	while (!isCorrectInput())
 	{
 		cin >> chooseTheme;
 	}
+	while (chooseTheme > 8 || chooseTheme < 1)
+	{
+		cout << "Такой темы нет. Выберите тему для изменения прогресса: "; cin >> chooseTheme;
+		while (!isCorrectInput())
+		{
+			cin >> chooseTheme;
+		}
+	}
+	chooseTheme--;
 	cout << "Введите новую оценку: "; cin >> changeMark;
 	while (!isCorrectInput())
 	{
 		cin >> changeMark;
 	}
-	while (changeMark < 2 && changeMark > 5)
+	while (changeMark < 2 || changeMark > 5)
 	{
 		cout << "Оценки ставятся в 5 - ти бальной системе. Введите новую оценку: "; cin >> changeMark;
 		while (!isCorrectInput())
@@ -84,7 +102,7 @@ void outputStudents(DBUsers & use, DBQuestion& question)
 			{
 				cin >> chooseTheme1;
 			}
-			while (chooseTheme1 < 1 && chooseTheme1 > 8)
+			while (chooseTheme1 < 1 || chooseTheme1 > 8)
 			{
 				cout << "Неверный номер темы. Введите номер темы: ";
 				cin >> chooseTheme1;
@@ -116,7 +134,7 @@ void outputStudents(DBUsers & use, DBQuestion& question)
 				cout << use.students[i].lastName << " " << use.students[i].firstName << " " << use.students[i].averageMark << endl;
 			}
 		}
-		else
+		else if(chooseTheme < 0 && chooseTheme > 4)
 		{
 			cout << "Некорректный ввод. Введите вариант вывода:"; cin >> chooseTheme;
 			while (!isCorrectInput())
@@ -133,12 +151,6 @@ void Filtr(DBUsers& use, DBQuestion & question)
 	int cnt = 0;
 	do
 	{
-		cout << "Введите нужную оценку для поиска: ";
-		cin >> mark_choice;
-		while (!isCorrectInput())
-		{
-			cin >> mark_choice;
-		}
 		cout << "1 - По всем темам\n2 - По конкретной теме\n3 - Только итоговый тест\n4 - Только средний балл\n0 - Выход\nВыберете вариант фильтрации: "; cin >> num_out;
 		while (!isCorrectInput())
 		{
@@ -146,28 +158,55 @@ void Filtr(DBUsers& use, DBQuestion & question)
 		}
 		if (num_out == 1)
 		{
+			cout << "Введите нужную оценку для поиска: ";
+			cin >> mark_choice;
+			while (!isCorrectInput())
+			{
+				cin >> mark_choice;
+			}
+			while (mark_choice > 5 || mark_choice < 2)
+			{
+				cout << "Оценка введена некорректно. Введите нужную оценку для поиска: ";
+				cin >> mark_choice;
+				while (!isCorrectInput())
+				{
+					cin >> mark_choice;
+				}
+			}
 			mark_choice = (int)mark_choice;
 			for (int i = 0; i < use.countStudents; i++)
 			{
-				cout << use.students[i].lastName << " " << use.students[i].firstName << endl;;
 				for (int j = 0; j < 8; j++)
 				{
 					if (use.students[i].marks[j] == mark_choice)
 					{
-						cout << question.themes[j].name << " " << use.students[i].marks[j] << endl;
+						cout << use.students[i].lastName << " " << use.students[i].firstName << endl;
+						cout << question.themes[j].name <<endl << "Оценка: " << use.students[i].marks[j] << endl;
 						cnt++;
 					}
 				}
-				if (cnt == 0)
-				{
-					cout << "Нет оценок ни по одной из тем.";
-					cout << endl;
-				}
-				cnt = 0;
 			}
+			if (cnt == 0)
+				cout << "Не найдено студентов с оценкой " << mark_choice << endl;
+			cnt = 0;
 		}
 		if (num_out == 2)
 		{
+			cout << "Введите нужную оценку для поиска: ";
+			cin >> mark_choice;
+			while (!isCorrectInput())
+			{
+				cin >> mark_choice;
+			}
+			while (mark_choice > 5 || mark_choice < 2)
+			{
+				cout << "Оценка введена некорректно. Введите нужную оценку для поиска: "; 
+				cin >> mark_choice;
+				while (!isCorrectInput())
+				{
+					cin >> mark_choice;
+				}
+			}
 			mark_choice = (int)mark_choice;
 			for (int i = 0; i < 8; i++)
 			{
@@ -179,8 +218,7 @@ void Filtr(DBUsers& use, DBQuestion & question)
 			{
 				cin >> num_theme;
 			}
-			num_theme--;
-			while (num_theme < 1 && num_theme > 7)
+			while (num_theme < 1 || num_theme > 8)
 			{
 				cout << "Ошибка, такой темы нет. Введите номер темы: "; cin >> num_theme;
 				while (!isCorrectInput())
@@ -188,51 +226,80 @@ void Filtr(DBUsers& use, DBQuestion & question)
 					cin >> num_theme;
 				}
 			}
+			num_theme--;
 			for (int i = 0; i < use.countStudents; i++)
 			{
-				cout << use.students[i].lastName << " " << use.students[i].firstName;
 				if (use.students[i].marks[num_theme] == mark_choice)
 				{
-					cout << " " << mark_choice;
-				}
-				else
-				{
-					cout << "У студента нет оценок по данной теме.";
-					cout << endl;
+					cout << use.students[i].lastName << " " << use.students[i].firstName << endl;
+					cout << "Оценка: " << mark_choice;
+					cnt++;
 				}
 			}
+			if (cnt == 0)
+				cout << "Не найдено студентов с оценкой " << mark_choice << endl;
+			cnt = 0;
 		}
 		if (num_out == 3)
 		{
+			cout << "Введите нужную оценку для поиска: ";
+			cin >> mark_choice;
+			while (!isCorrectInput())
+			{
+				cin >> mark_choice;
+			}
+			while (mark_choice > 5 || mark_choice < 2)
+			{
+				cout << "Оценка введена некорректно. Введите нужную оценку для поиска: ";
+				cin >> mark_choice;
+				while (!isCorrectInput())
+				{
+					cin >> mark_choice;
+				}
+			}
 			mark_choice = (int)mark_choice;
 			for (int i = 0; i < use.countStudents; i++)
 			{
 				if (use.students[i].finalMark == mark_choice)
 				{
-					cout << use.students[i].lastName << " " << use.students[i].firstName << " " << use.students[i].finalMark << endl;
-				}
-				else
-				{
-					cout << "Студент не проходил финальный тест.";
-					cout << endl;
+					cout << use.students[i].lastName << " " << use.students[i].firstName << endl << "Оценка: " << use.students[i].finalMark << endl;
+					cnt++;
 				}
 			}
+			if (cnt == 0)
+				cout << "Не найдено студентов с оценкой " << mark_choice << endl;
+			cnt = 0;
 		}
 		if (num_out == 4)
 		{
+			cout << "Введите нужную оценку для поиска: ";
+			cin >> mark_choice;
+			while (!isCorrectInput())
+			{
+				cin >> mark_choice;
+			}
+			while (mark_choice > 5 || mark_choice < 2)
+			{
+				cout << "Оценка введена некорректно. Введите нужную оценку для поиска: ";
+				cin >> mark_choice;
+				while (!isCorrectInput())
+				{
+					cin >> mark_choice;
+				}
+			}
 			for (int i = 0; i < use.countStudents; i++)
 			{
 				cout << use.students[i].lastName << " " << use.students[i].firstName;
 				if (use.students[i].averageMark == mark_choice)
 				{
-					cout << " " << use.students[i].averageMark << endl;
-				}
-				else
-				{
-					cout << "Студент не проходил ни одного тестирования или финального теста.";
-					cout << endl;
+					cout << use.students[i].lastName << " " << use.students[i].firstName << endl;
+					cout << "Оценка: " << use.students[i].averageMark << endl;
+					cnt++;
 				}
 			}
+			if (cnt == 0)
+				cout << "Не найдено студентов с оценкой " << mark_choice << endl;
+			cnt = 0;
 		}
 		if (num_out < 0 && num_out > 4)
 		{
