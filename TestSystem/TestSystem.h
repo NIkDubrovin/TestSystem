@@ -14,14 +14,14 @@ typedef struct Answer
 
 typedef struct Question
 {
-	char *text;
+	char* text;
 	Answer answers[4];
 	int rightAnswer;
 } Question;
 
 typedef struct Theme
 {
-	char *name;
+	char* name;
 	int countQuestions;
 	Question* questions;
 } Theme;
@@ -57,30 +57,40 @@ typedef struct DBUsers
 	Student* students;
 } DBUsers;
 
+typedef enum STATE
+{
+	MENU,
+	TEACHER,
+	STUDENT,
+	EXIT
+} STATE;
+
 // DB FUNCTIONS
 int toEncodeFile(const char* fileNameQues, const char* fileNameUsers, const DBQuestion& questions, const DBUsers& users);
-int toDecodeFile(const char* fileNameQues,const char* fileNameUsers, DBQuestion& questions, DBUsers& users);
-int createDbFiles(const char* fileNameQues,const char* fileNameUsers);
+int toDecodeFile(const char* fileNameQues, const char* fileNameUsers, DBQuestion& questions, DBUsers& users);
+int createDbFiles(const char* fileNameQues, const char* fileNameUsers);
 int createUser(User&, int);
 void randStr(char* buf, int count, int startC, int endC);
 char* readStringFromFileToBuffer(FILE* file, char* buf);
 char* readStringFromBuffer(char** buf);
-void freeDBs(const DBUsers& users,const DBQuestion& questions);
+void freeDBs(const DBUsers& users, const DBQuestion& questions);
 void printDBs(const DBUsers& users, const DBQuestion& questions);
 int readDBsFromFiles(const char* fileNameUsers, const char* fileNameQuests, DBQuestion& questions, DBUsers& users);
 int readDBsFromBuffers(const char* bufUsers, int sizeBufUsers, DBUsers& users, const char* bufQuests, int sizeBufQuests, DBQuestion& questions);
-int DBsToBuffers(char** bufQuests, int* sizeQuests, char** bufUsers, int* sizeUsers, const DBQuestion& questions,const DBUsers& users);
+int DBsToBuffers(char** bufQuests, int* sizeQuests, char** bufUsers, int* sizeUsers, const DBQuestion& questions, const DBUsers& users);
 int writeDBsFromBuffers(const char* fileNameUsers, char* bufUsers, int sizeBufUsers, const DBUsers& users, const char* fileNameQuests, char* bufQuests, int sizeBufQuests, const DBQuestion& questions);
 void printBuffer(const char* buf, int size, const char* type);
 int sizesDBs(int* sizeDBUsers, int* sizeDBQues, DBQuestion& questions, DBUsers& users);
-void debug(const char*);
-void StudentMenu(DBUsers& users,DBQuestion& questions);
+
 
 //  FUNCTIONS
-// return 0 - isnt founded
-// return 1 - teacher
-// return 2  - student
-int checkUser(User* user, DBUsers* users);
+
+// return -1 - isnt founded
+// return 0 - teacher
+// return 1  - student
+int checkUser(User& user, DBUsers& users, int&);
+
+int inLogin(STATE& state, DBUsers& users, int& id);
 int editQuestions(DBQuestion* qs);
 int workDBStudents(DBUsers* dbUsers);
 
@@ -88,4 +98,7 @@ int trainingTheme(DBQuestion* questions);
 int testTheme(Student* student, DBQuestion* questions);
 int finalTest(Student* student, DBQuestion* questions);
 
-int inLogin();
+void clearScreen();
+unsigned char isCorrectInput();
+void debug(const char*);
+
