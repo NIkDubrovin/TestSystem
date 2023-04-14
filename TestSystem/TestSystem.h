@@ -4,6 +4,8 @@
 #include <math.h>
 #include <iostream>
 #include <locale.h>
+#include <time.h>
+
 
 const int code = 0x10;
 
@@ -83,7 +85,7 @@ void printBuffer(const char* buf, int size, const char* type);
 int sizesDBs(int* sizeDBUsers, int* sizeDBQues, DBQuestion& questions, DBUsers& users);
 
 
-//  FUNCTIONS
+// MENU  FUNCTIONS
 
 // return -1 - isnt founded
 // return 0 - teacher
@@ -94,6 +96,7 @@ int inLogin(STATE& state, DBUsers& users, int& id);
 int editQuestions(DBQuestion* qs);
 int workDBStudents(DBUsers* dbUsers);
 
+void StudentMenu(DBUsers& users, DBQuestion& questions);
 int trainingTheme(DBQuestion* questions);
 int testTheme(Student* student, DBQuestion* questions);
 int finalTest(Student* student, DBQuestion* questions);

@@ -1,8 +1,6 @@
 #include "TestSystem.h"
-#include <locale.h>
-#include <iostream>
-#include <time.h>
-#include <stdlib.h>
+#include "Student.h"
+
 using namespace std;
 #define lenmas 100
 
@@ -11,6 +9,7 @@ struct randQuestForFinalTest
 	int randTheme;
 	int randQuest;
 };
+
 int IsUniqNumbers(int* UniqNumbers, int elem, int& k)
 {
 	for (int i = 0; i < lenmas; ++i)

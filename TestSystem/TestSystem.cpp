@@ -25,12 +25,17 @@ int main()
 		switch (state)
 		{
 		case MENU:
-			if (!inLogin(state, users, id))
+			if (!inLogin(state, users, id)) 
+			{
 				debug("malloc strings\n");
+				return 0;
+			}
 			break;
 		case TEACHER:
+
 			break;
 		case STUDENT:
+			StudentMenu(users, questions);
 			break;
 		case EXIT:
 			break;
