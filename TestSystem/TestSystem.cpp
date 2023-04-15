@@ -122,6 +122,8 @@ char* getConsoleString() {
 
 	std::cin.seekg(0, std::ios::end);
 	std::cin.clear();
+
+	return buf;
 }
 
 int checkUser(User& user, DBUsers& users, int& id) {
