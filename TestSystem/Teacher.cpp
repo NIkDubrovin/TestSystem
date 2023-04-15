@@ -6,7 +6,7 @@ int add_student(DBUsers& dbuser)
 	clearScreen();
 	cout << "1 - Добавление нового студента\n0 - Выход\nВведите номер желаемой операции: ";
 	cin >> various;
-	while (!isCorrectInput)
+	while (!isCorrectInput())
 	{
 		cin >> various;
 	}
@@ -17,7 +17,7 @@ int add_student(DBUsers& dbuser)
 		//add
 		for (int i = 0; i < 8; i++)
 		{
-			dbuser.students[dbuser.countStudents].marks[i] = { 0 };
+			dbuser.students[dbuser.countStudents - 1].marks[i] = { 0 };
 		}
 
 		//dbuser.students[dbuser.countStudents].user.login = (DBUsers*)malloc(/*dbuser.students[dbuser.countStudents].user.login,*/ (maxlen + 1) * sizeof(DBUsers));
@@ -46,7 +46,7 @@ int add_student(DBUsers& dbuser)
 		cout << "1 - Добавление нового студента\n0 - Выход\nВведите номер желаемой операции: ";
 		cin >> various;
 
-		while (!isCorrectInput)
+		while (!isCorrectInput())
 		{
 			cin >> various;
 		}
@@ -57,7 +57,7 @@ int del_student(DBUsers& dbuser)
 {
 	int various = 1;
 	cout << "1 -  Удаление студента\n0 - Выход\nВведите номер желаемой операции: ";
-	while (!isCorrectInput)
+	while (!isCorrectInput())
 	{
 		cin >> various;
 	}
@@ -70,7 +70,9 @@ int del_student(DBUsers& dbuser)
 			cout << i + 1 << " " << dbuser.students[i].lastName << " " << dbuser.students[i].firstName << endl;
 
 		}
-		cout << "Введите номер студента, которого желаете удалить: "; cin >> del;
+		cout << "Введите номер студента, которого желаете удалить: "; 
+		cin >> del;
+
 		for (int i = del; i < dbuser.countStudents - 1; i++)
 		{
 			dbuser.students[i].firstName = dbuser.students[i + 1].firstName;
@@ -82,6 +84,10 @@ int del_student(DBUsers& dbuser)
 			for (int j = 0; j < 8; j++)
 				dbuser.students[i].marks[j] = dbuser.students[i].marks[j];
 		}
+
+		dbuser.countStudents--;
+		// free()
+
 		//добавить очистку последнего типочка и проверки
 		cout << "Измененный список студентов: ";
 		for (int i = 0; i < dbuser.countStudents; i++)

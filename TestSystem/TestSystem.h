@@ -6,7 +6,6 @@
 #include <locale.h>
 #include <time.h>
 
-
 const int code = 0x10;
 
 typedef struct Answer
