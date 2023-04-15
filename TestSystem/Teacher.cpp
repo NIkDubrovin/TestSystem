@@ -410,12 +410,17 @@ void Filtr(DBUsers& use, DBQuestion & question)
 }
 void sortMarks(DBUsers& use, DBQuestion& dbq)
 {
-	int sortChoice;
+	int sortChoice=0;
 	cout << "Выберите критерий сортировки:\n";
 	cout << "1. По конкретной теме\n";
 	cout << "2. По итоговому тесту\n";
 	cout << "3. По среднему баллу\n";
-	cin >> sortChoice;
+
+	while (!isCorrectInput())
+	{
+		cin >> sortChoice;
+	}
+	
 	switch (sortChoice)
 	{
 	case 1:
@@ -425,8 +430,11 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 		{
 			cout << i + 1 << ". " << dbq.themes[i].name << endl;
 		}
-		cin >> themeChoice;
-
+		while (!isCorrectInput())
+		{
+			cin >> themeChoice;
+		}
+		
 
 		// Сортировка по выбранной теме
 		for (int i = 0; i < use.countStudents; i++)
