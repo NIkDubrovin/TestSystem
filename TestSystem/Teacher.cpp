@@ -408,24 +408,27 @@ void Filtr(DBUsers& use, DBQuestion & question)
 		}
 	} while (num_out != 0);
 }
+
 void sortMarks(DBUsers& use, DBQuestion& dbq)
 {
 	int sortChoice=0;
 	do
-	{
+	{	
 		cout << "Выберите критерий сортировки:\n";
 		cout << "1. По конкретной теме\n";
 		cout << "2. По итоговому тесту\n";
 		cout << "3. По среднему баллу\n";
+		cout << "0.Выход\n";
 
 		while (!isCorrectInput())
 		{
 			cin >> sortChoice;
-		}
+		}	
 
 		switch (sortChoice)
 		{
 		case 1:
+		{
 			int themeChoice;
 			cout << "Выберите тему для сортировки:\n";
 			for (int i = 0; i < dbq.countThemes; i++)
@@ -462,9 +465,10 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 				Student& st = use.students[i];
 				cout << st.lastName << " " << st.firstName << ": " << st.marks[themeChoice - 1] << endl;
 			}
-			break;
+		}break;
 
 		case 2:
+		{
 			// Сортировка по итоговому тесту
 			for (int i = 0; i < use.countStudents; i++)
 			{
@@ -483,9 +487,10 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 				Student& st = use.students[i];
 				cout << st.lastName << " " << st.firstName << ": " << st.finalMark << endl;
 			}
-			break;
+		}break;
 
 		case 3:
+		{
 			// Сортировка по среднему баллу
 			for (int i = 0; i < use.countStudents; i++)
 			{
@@ -503,11 +508,18 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 				Student& st = use.students[i];
 				cout << st.lastName << " " << st.firstName << ": " << st.averageMark << endl;
 			}
-			break;
+		}break;
 
 		default:
-			cout << "Неправильный выбор критерия сортировки\n";
-			break;
+		{
+			cout << "Неправильный выбор критерия сортировки. Введите номер желаемого критерия:";
+			cin >> sortChoice;
+			while (!isCorrectInput())
+			{
+				cin >> sortChoice;
+			}
+		}
+			
 		}
 	} while (sortChoice!=0);
 }
