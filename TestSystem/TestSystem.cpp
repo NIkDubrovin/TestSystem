@@ -3,7 +3,7 @@
 int main()
 {
 	DBQuestion questions = { 0 };
-	DBUsers users{ 0 };
+	DBUsers users = { 0 };
 	const char* nameDbUsers = "dbU.db",
 		* nameDbQuestions = "dbQ.db";
 	STATE state = MENU;
@@ -27,15 +27,18 @@ int main()
 		case MENU:
 			if (!inLogin(state, users, id)) 
 			{
-				debug("malloc strings\n");
+				debug("Login\n");
 				return 0;
 			}
 			break;
 		case TEACHER:
 			TeacherMain(users, questions);
+			state = MENU;
 			break;
 		case STUDENT:
 			StudentMenu(users, questions);
+			state = MENU;
+			clearScreen();
 			break;
 		case EXIT:
 			break;
@@ -70,22 +73,22 @@ int inLogin(STATE& state, DBUsers& users, int& id) {
 		int res = checkUser(user, users, id);
 		switch (res)
 		{
-		case 0:
-		{
-			state = TEACHER;
-			exit = 1;
-			printf_s("Преподаватель.\n");
-		} break;
-		case 1:
-		{
-			printf_s("Студент.\n");
-			state = STUDENT;
-			exit = 1;
-		} break;
-		default:
-		{
-			printf_s("Пользователь не найден.\n");
-		} break;
+			case 0:
+			{
+				state = TEACHER;
+				exit = 1;
+				printf_s("Преподаватель.\n");
+			} break;
+			case 1:
+			{
+				printf_s("Студент.\n");
+				state = STUDENT;
+				exit = 1;
+			} break;
+			default:
+			{
+				printf_s("Пользователь не найден.\n");
+			} break;
 		}
 
 		if (!exit)

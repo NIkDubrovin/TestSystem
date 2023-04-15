@@ -249,9 +249,12 @@ int StudentMenu(DBUsers& users,DBQuestion& questions)
 	do
 	{
 		do {
-			cout << "Выберите: \n1 - Тренинг по выбранной вами теме\n2 - Тест по выбранной вами теме\n3 - Итоговый тест\n";
+			cout << "Выберите: \n1 - Тренинг по выбранной вами теме\n2 - Тест по выбранной вами теме\n3 - Итоговый тест\n4 - Выход\n";
 			cin >> choose;
 		} while (!isCorrectInput());
+
+		if (choose == 4)
+			return 0;
 	} while (choose != 1 && choose != 2 && choose != 3);
 
 	switch (choose)
