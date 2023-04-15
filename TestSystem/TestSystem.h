@@ -107,9 +107,9 @@ unsigned char isCorrectInput();
 void debug(const char*);
 
 void TeacherMain(DBUsers& Dbusers, DBQuestion& question);
-int add_student(Student& student);
-int del_student(Student& student);
+int add_student(DBUsers& dbuser);
+int  del_student(DBUsers& dbuser);
 int changeProgress_student(DBUsers& use, DBQuestion& question);
 void outputStudents(DBUsers& use, DBQuestion& question);
 void Filtr(DBUsers & use, DBQuestion& question);
-void Sorted(Student& student, Theme& theme);
+void sortMarks(DBUsers& use, DBQuestion& dbq);
