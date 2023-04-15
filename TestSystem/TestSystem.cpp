@@ -20,7 +20,6 @@ int main()
 		return 0;
 	}
 
-
 	while (state != EXIT)
 	{
 		switch (state)
@@ -59,21 +58,14 @@ int main()
 int inLogin(STATE& state, DBUsers& users, int& id) {
 	User user = { 0 };
 	int exit = 0;
-	int MAX_SYMBOLS = 256;
-
-	user.login = (char*)malloc(MAX_SYMBOLS * sizeof(char));
-	user.password = (char*)malloc(MAX_SYMBOLS * sizeof(char));
-
-	if (user.login == nullptr || user.password == nullptr)
-		return 0;
-
+	
 	while (!exit)
 	{
 		printf_s("¬ведите логин: ");
-		scanf_s("%[^\n]%*c", user.login, MAX_SYMBOLS);
+		user.login = getConsoleString();
 
 		printf_s("¬ведите пароль: ");
-		scanf_s("%[^\n]%*c", user.password, MAX_SYMBOLS);
+		user.password = getConsoleString();
 
 		int res = checkUser(user, users, id);
 		switch (res)
@@ -106,8 +98,8 @@ int inLogin(STATE& state, DBUsers& users, int& id) {
 			}
 			else
 			{
-				memset(user.login, 0, MAX_SYMBOLS);
-				memset(user.password, 0, MAX_SYMBOLS);
+				free(user.login);
+				free(user.password);
 				clearScreen();
 			}
 		}
@@ -117,6 +109,19 @@ int inLogin(STATE& state, DBUsers& users, int& id) {
 	free(user.password);
 
 	return 1;
+}
+
+char* getConsoleString() {
+	int MAX_SYMBOLS = 256;
+	char* buf = nullptr;
+
+	if ((buf = (char*)malloc(MAX_SYMBOLS * sizeof(char))) == nullptr)
+		return nullptr;
+
+	scanf_s("%255[^\n]%*c", buf, MAX_SYMBOLS);
+
+	std::cin.seekg(0, std::ios::end);
+	std::cin.clear();
 }
 
 int checkUser(User& user, DBUsers& users, int& id) {
@@ -144,7 +149,8 @@ int checkUser(User& user, DBUsers& users, int& id) {
 	return -1;
 }
 
-unsigned char isCorrectInput() {
+unsigned char isCorrectInput() 
+{
 	if (std::cin.fail()) {
 		std::cin.clear();
 		std::cin.ignore(1000, '\n');
@@ -165,6 +171,7 @@ void clearScreen()
 {
 	system("cls");
 
+	// to skip other symbols
 	std::cin.seekg(0, std::ios::end);
 	std::cin.clear();
 }

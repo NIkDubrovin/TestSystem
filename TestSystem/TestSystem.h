@@ -101,6 +101,7 @@ int trainingTheme(DBQuestion* questions);
 int testTheme(Student* student, DBQuestion* questions);
 int finalTest(Student* student, DBQuestion* questions);
 
+char* getConsoleString();
 void clearScreen();
 unsigned char isCorrectInput();
 void debug(const char*);
