@@ -411,103 +411,105 @@ void Filtr(DBUsers& use, DBQuestion & question)
 void sortMarks(DBUsers& use, DBQuestion& dbq)
 {
 	int sortChoice=0;
-	cout << "Выберите критерий сортировки:\n";
-	cout << "1. По конкретной теме\n";
-	cout << "2. По итоговому тесту\n";
-	cout << "3. По среднему баллу\n";
+	do
+	{
+		cout << "Выберите критерий сортировки:\n";
+		cout << "1. По конкретной теме\n";
+		cout << "2. По итоговому тесту\n";
+		cout << "3. По среднему баллу\n";
 
-	while (!isCorrectInput())
-	{
-		cin >> sortChoice;
-	}
-	
-	switch (sortChoice)
-	{
-	case 1:
-		int themeChoice;
-		cout << "Выберите тему для сортировки:\n";
-		for (int i = 0; i < dbq.countThemes; i++)
-		{
-			cout << i + 1 << ". " << dbq.themes[i].name << endl;
-		}
 		while (!isCorrectInput())
 		{
-			cin >> themeChoice;
+			cin >> sortChoice;
 		}
-		
 
-		// Сортировка по выбранной теме
-		for (int i = 0; i < use.countStudents; i++)
+		switch (sortChoice)
 		{
-			for (int j = 0; j < 8; j++)
+		case 1:
+			int themeChoice;
+			cout << "Выберите тему для сортировки:\n";
+			for (int i = 0; i < dbq.countThemes; i++)
 			{
-				if (j == themeChoice - 1)
+				cout << i + 1 << ". " << dbq.themes[i].name << endl;
+			}
+			while (!isCorrectInput())
+			{
+				cin >> themeChoice;
+			}
+
+
+			// Сортировка по выбранной теме
+			for (int i = 0; i < use.countStudents; i++)
+			{
+				for (int j = 0; j < 8; j++)
 				{
-					for (int k = j + 1; k < 8; k++)
+					if (j == themeChoice - 1)
 					{
-						if (use.students[i].marks[j] < use.students[i].marks[k])
+						for (int k = j + 1; k < 8; k++)
 						{
-							swap(use.students[i].marks[j], use.students[i].marks[k]);
+							if (use.students[i].marks[j] < use.students[i].marks[k])
+							{
+								swap(use.students[i].marks[j], use.students[i].marks[k]);
+							}
 						}
 					}
 				}
 			}
-		}
 
-		// Вывод отсортированных оценок по теме
-		for (int i = 0; i < use.countStudents; i++)
-		{
-			Student& st = use.students[i];
-			cout << st.lastName << " " << st.firstName << ": " << st.marks[themeChoice - 1] << endl;
-		}
-		break;
-
-	case 2:
-		// Сортировка по итоговому тесту
-		for (int i = 0; i < use.countStudents; i++)
-		{
-			for (int j = i + 1; j < use.countStudents; j++)
+			// Вывод отсортированных оценок по теме
+			for (int i = 0; i < use.countStudents; i++)
 			{
-				if (use.students[i].finalMark < use.students[j].finalMark)
+				Student& st = use.students[i];
+				cout << st.lastName << " " << st.firstName << ": " << st.marks[themeChoice - 1] << endl;
+			}
+			break;
+
+		case 2:
+			// Сортировка по итоговому тесту
+			for (int i = 0; i < use.countStudents; i++)
+			{
+				for (int j = i + 1; j < use.countStudents; j++)
 				{
-					swap(use.students[i], use.students[j]);
+					if (use.students[i].finalMark < use.students[j].finalMark)
+					{
+						swap(use.students[i], use.students[j]);
+					}
 				}
 			}
-		}
 
-		// Вывод отсортированных оценок по итоговому тесту
-		for (int i = 0; i < use.countStudents; i++)
-		{
-			Student& st = use.students[i];
-			cout << st.lastName << " " << st.firstName << ": " << st.finalMark << endl;
-		}
-		break;
-
-	case 3:
-		// Сортировка по среднему баллу
-		for (int i = 0; i < use.countStudents; i++)
-		{
-			for (int j = i + 1; j < use.countStudents; j++)
+			// Вывод отсортированных оценок по итоговому тесту
+			for (int i = 0; i < use.countStudents; i++)
 			{
-				if (use.students[i].averageMark < use.students[j].averageMark) {
-					swap(use.students[i], use.students[j]);
+				Student& st = use.students[i];
+				cout << st.lastName << " " << st.firstName << ": " << st.finalMark << endl;
+			}
+			break;
+
+		case 3:
+			// Сортировка по среднему баллу
+			for (int i = 0; i < use.countStudents; i++)
+			{
+				for (int j = i + 1; j < use.countStudents; j++)
+				{
+					if (use.students[i].averageMark < use.students[j].averageMark) {
+						swap(use.students[i], use.students[j]);
+					}
 				}
 			}
+
+			// Вывод отсортированных оценок
+			for (int i = 0; i < use.countStudents; i++)
+			{
+				Student& st = use.students[i];
+				cout << st.lastName << " " << st.firstName << ": " << st.averageMark << endl;
+			}
+			break;
+
+		default:
+			cout << "Неправильный выбор критерия сортировки\n";
+			break;
 		}
-
-		// Вывод отсортированных оценок
-		for (int i = 0; i < use.countStudents; i++)
-		{
-			Student& st = use.students[i];
-			cout << st.lastName << " " << st.firstName << ": " << st.averageMark << endl;
-		}
-		break;
-
-	default:
-		cout << "Неправильный выбор критерия сортировки\n";
-		break;
-	}
-
+	} while (sortChoice!=0);
 }
 void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 {
