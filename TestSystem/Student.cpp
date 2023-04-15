@@ -52,7 +52,7 @@ int trainingTheme(DBQuestion& DBquestions)
 	do
 	{
 		do {
-			cout << "Выберите тему: \n1 - Циклы\n2 - Массивы(одномерные и двумерные)\n3 - Строки\n4 - Рекурсия\n5 - Структуры\n6 - Файлы\n7 - Адреса и указатели\n8 - Динамическая память\n";
+			cout  << "Выберите тему: \n1 - Адреса и указатели\n2 - Динамическая память\n3 - Массивы\n4 - Рекурсия\n5 - Строки\n6 - Структуры\n7 - Файлы\n8 - Циклы\n";
 			cin >> selecttheme;
 		} while (!isCorrectInput());
 	} while (selecttheme < 1 || selecttheme >8);
@@ -94,10 +94,10 @@ int TestTheme(DBUsers& users,DBQuestion& DBquestions)
 	do
 	{
 		do{
-			cout << "Выберите тему: \n1 - Циклы\n2 - Массивы(одномерные и двумерные)\n3 - Строки\n4 - Рекурсия\n5 - Структуры\n6 - Файлы\n7 - Адреса и указатели\n8 - Динамическая память\n";
+			cout << "Выберите тему: \n1 - Адреса и указатели\n2 - Динамическая память\n3 - Массивы\n4 - Рекурсия\n5 - Строки\n6 - Структуры\n7 - Файлы\n8 - Циклы\n";
 			cin >> selecttheme;
 		} while (!isCorrectInput());
-		} while (selecttheme < 1 && selecttheme >8);
+		} while (selecttheme < 1 || selecttheme >8);
 		selecttheme -= 1;
 	cout << "Выбранная тема: \n" << DBquestions.themes[selecttheme].name << endl;
 	int answer = 0; int complete = 0;
@@ -158,7 +158,7 @@ int TestTheme(DBUsers& users,DBQuestion& DBquestions)
 
 	if (res <= 0.49)
 	{
-		lastres = 2;
+		lastres = 2; 
 		cout << endl << "Ваша оценка 2\n";
 	}
 	users.students->marks[selecttheme] = lastres;
