@@ -1,4 +1,5 @@
 #include "TestSystem.h"
+#include <vector>
 using namespace std;
 int add_student(DBUsers& dbuser)
 {
@@ -31,6 +32,7 @@ int add_student(DBUsers& dbuser)
 }
 int del_student(DBUsers& dbuser)
 {
+	clearScreen();
 	int various = 1;
 	cout << "1 -  Удаление студента\n0 - Выход\nВведите номер желаемой операции: ";
 	while (!isCorrectInput)
@@ -56,7 +58,7 @@ int del_student(DBUsers& dbuser)
 			dbuser.students[i].averageMark = dbuser.students[i + 1].averageMark;
 			dbuser.students[i].finalMark = dbuser.students[i + 1].finalMark;
 			for (int j = 0; j < 8; j++)
-				dbuser.students[i].marks[j] = dbuser.students[i].marks[j];
+				dbuser.students[i].marks[j] = dbuser.students[i+1].marks[j];
 		}
 		//добавить очистку последнего типочка и проверки
 		cout << "Измененный список студентов: ";
@@ -77,6 +79,7 @@ int del_student(DBUsers& dbuser)
 
 int changeProgress_student(DBUsers& use, DBQuestion& question)
 {
+	clearScreen();
 	int changeMark = 0;
 	int chooseStudent = 0, chooseTheme = 0;
 	cout << "Список студентов" << endl;
@@ -134,6 +137,7 @@ int changeProgress_student(DBUsers& use, DBQuestion& question)
 }
 void outputStudents(DBUsers& use, DBQuestion& question)
 {
+	clearScreen();
 	int chooseTheme = 0, chooseTheme1 = 0;
 	do {
 		cout << "1 - По всем темам\n2 - По конкретной теме\n3 - Только итоговый тест\n4 - Только средний балл\n0 - Выход\nВыберете вариант вывода: "; cin >> chooseTheme;
@@ -213,6 +217,7 @@ void outputStudents(DBUsers& use, DBQuestion& question)
 }
 void Filtr(DBUsers& use, DBQuestion& question)
 {
+	clearScreen();
 	double mark_choice = 0, num_out = 0;
 	int num_theme = 0;
 	int cnt = 0;
@@ -380,6 +385,7 @@ void Filtr(DBUsers& use, DBQuestion& question)
 }
 void sortMarks(DBUsers& use, DBQuestion& dbq)
 {
+	clearScreen();
 	int sortChoice;
 	cout << "Выберите критерий сортировки:\n";
 	cout << "1. По конкретной теме\n";
@@ -472,6 +478,7 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 }
 int add_qoestion(DBQuestion& quse)
 {
+	clearScreen();
 	int num_theme, quit = 1, true_answer;
 	do {
 		for (int i = 0; i < 8; i++)
@@ -533,17 +540,174 @@ int add_qoestion(DBQuestion& quse)
 
 int del_question(DBQuestion& quse)
 {
-	return 0;
+	clearScreen();
+	int theme_num = 0, que_num = 0, quit = 1;
+	do
+	{
+		cout << "Список вопросов по темам:\n";
+		for (int i = 0; i < 8; i++)
+		{
+			cout << i + 1 << quse.themes[i].name << endl;
+			for (int j = 0; j < quse.themes[i].countQuestions; j++)
+			{
+				cout << "\t\t" << j + 1 << ". " << quse.themes[i].questions[j].text << endl;
+			}
+			cout << endl;
+
+		}
+		cout << "Введите номер желаемой темы для удаления вопроса: "; cin >> theme_num;
+		while (!isCorrectInput())
+		{
+			cin >> theme_num;
+		}
+		while (theme_num > 8 || theme_num < 1)
+		{
+			cout << "Такой темы нет. Введите номер желаемой темы: "; cin >> theme_num;
+			while (!isCorrectInput())
+			{
+				cin >> theme_num;
+			}
+		}
+		cout << "Введите номер вопроса который хотите удалить: ";
+		cin >> que_num;
+		while (!isCorrectInput)
+		{
+			cin >> que_num;
+		}
+		/*while (que_num > quse.themes[quse.countThemes].countQuestions || que_num < 0)
+		{
+			cout << "Введен не существующий номер вопроса\nВведите корректный номер вопроса: "; cin >> que_num;*/
+			while (!isCorrectInput)
+			{
+				cin >> que_num;
+			}
+		//}
+
+		theme_num--; que_num--;
+
+		for (int i = 0; i < quse.themes[theme_num].countQuestions; i++)
+		{
+			quse.themes[theme_num].questions[i].text = quse.themes[theme_num].questions[i + 1].text;
+			for (int j = 0; j < 4; j++)
+			{
+				quse.themes[theme_num].questions[i].answers[j] = quse.themes[theme_num].questions[i + 1].answers[j];
+			}
+			quse.themes[theme_num].questions[i].rightAnswer = quse.themes[theme_num].questions[i + 1].rightAnswer;
+		}
+
+		quse.themes[theme_num].countQuestions--;
+		/*quse.themes[theme_num].questions[quse.themes[theme_num].countQuestions] = 
+			(DBQuestion*)realloc(quse.themes[theme_num].questions[quse.themes[theme_num].countQuestions], sizeof(DBQuestion) * (quse.themes[theme_num].countQuestions-1));*/
+		cout << "1 - Удалить вопрос\n0 - Выход\nВведите номер желаемого действия: "; cin >> quit;
+		while (!isCorrectInput())
+		{
+			cin >> quit;
+		}
+		while (quit != 1 && quit != 0)
+		{
+			cout << "Ошибка. Введите номер желаемого действия: "; cin >> quit;
+			while (!isCorrectInput())
+			{
+				cin >> quit;
+			}
+		}
+	} while (quit != 0);
+	return 1;
 }
 
 int change_qustion(DBQuestion& quse)
 {
-	return 0;
+	clearScreen();
+	int theme_num = 0, que_num = 0, quit = 1, true_answer = 0;
+	do
+	{
+		cout << "Список вопросов по темам:\n";
+		for (int i = 0; i < 8; i++)
+		{
+			cout << i + 1 << quse.themes[i].name << endl;
+			for (int j = 0; j < quse.themes[i].countQuestions; j++)
+			{
+				cout << "\t\t" << j + 1 << ". " << quse.themes[i].questions[j].text << endl;
+			}
+			cout << endl;
+
+		}
+		cout << "Введите номер темы, вопрос которой хотите изменить: ";
+		cin >> theme_num;
+		while (!isCorrectInput)
+		{
+			cin >> theme_num;
+		}
+		if (theme_num > 8 || theme_num < 0)
+		{
+			cout << "Введен не существующий номер темы\nВведите корректный номер темы: "; cin >> theme_num;
+			while (!isCorrectInput)
+			{
+				cin >> theme_num;
+			}
+		}
+		cout << "Введите номер вопроса которой хотите изменить: ";
+		cin >> que_num;
+		while (!isCorrectInput)
+		{
+			cin >> que_num;
+		}
+//		while (que_num > quse.themes[quse.countThemes].countQuestions || que_num < 0)
+//		{
+			//cout << "Введен не существующий номер вопроса\nВведите корректный номер вопроса: "; cin >> que_num;
+			while (!isCorrectInput)
+			{
+				cin >> que_num;
+			}
+//		}
+
+		theme_num--; que_num--;
+		char quest;
+		cout << quse.themes[theme_num].name << "\n\n" << quse.themes[theme_num].questions[que_num].text;
+
+	
+		cout << "Введите текст нового вопроса: ";  //quest = getConsoleString();
+		cin >> quse.themes[theme_num].questions[que_num].text;
+		for (int j = 0; j < 4; j++)
+		{
+			cout << "Введите " << j + 1 << " вариант ответа:"; quse.themes[theme_num].questions[que_num].answers[j].text = getConsoleString(); cout << endl;
+		}
+		cout << "Введите номер правильного ответа: "; cin >> true_answer;
+		while (!isCorrectInput())
+		{
+			cin >> true_answer;
+		}
+		while (true_answer < 1 || true_answer > 4)
+		{
+			cout << "Такого варианта ответа нет. Введите номер правильного ответа: "; cin >> true_answer;
+			while (!isCorrectInput())
+			{
+				cin >> true_answer;
+			}
+		}
+		true_answer--;
+		quse.themes[theme_num].questions[que_num].rightAnswer = true_answer;
+		
+		cout << "1 - Изменить вопрос\n0 - Выход\nВведите номер желаемого действия: "; cin >> quit;
+		while (!isCorrectInput())
+		{
+			cin >> quit;
+		}
+		while (quit != 1 && quit != 0)
+		{
+			cout << "Ошибка. Введите номер желаемого действия: "; cin >> quit;
+			while (!isCorrectInput())
+			{
+				cin >> quit;
+			}
+		}
+	} while (quit != 0);
+	return 1;
 }
 
 void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 {
-
+	clearScreen();
 	int choice = 0, choice1 = 0, choice2 = 0, stud_add = 0;
 	do {
 		std::cout << "Режим преподавателя.\n1 - Редактирование вопросов\n2 - Работа со списком студентов\n0 - Выход\nВведите номер желаемого действия: ";
