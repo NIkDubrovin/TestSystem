@@ -6,6 +6,7 @@
 #include <locale.h>
 #include <time.h>
 
+
 const int code = 0x10;
 
 typedef struct Answer
@@ -110,5 +111,9 @@ int add_student(DBUsers& dbuser);
 int  del_student(DBUsers& dbuser);
 int changeProgress_student(DBUsers& use, DBQuestion& question);
 void outputStudents(DBUsers& use, DBQuestion& question);
-void Filtr(DBUsers & use, DBQuestion& question);
+void Filtr(DBUsers& use, DBQuestion& question);
 void sortMarks(DBUsers& use, DBQuestion& dbq);
+
+int add_qoestion(DBQuestion& quse);
+int del_question(DBQuestion& quse);
+int change_qustion(DBQuestion& quse);

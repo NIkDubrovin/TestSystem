@@ -4,50 +4,26 @@ int add_student(DBUsers& dbuser)
 {
 	int various = 1;
 	clearScreen();
-	cout << "1 - Добавление нового студента\n0 - Выход\nВведите номер желаемой операции: ";
-	cin >> various;
-	while (!isCorrectInput())
-	{
-		cin >> various;
-	}
 	do
 	{
-		dbuser.countStudents += 1;
-		dbuser.students = (Student*)realloc(dbuser.students, sizeof(Student) * dbuser.countStudents);
-		//add
-		for (int i = 0; i < 8; i++)
+		while (!isCorrectInput)
 		{
-			dbuser.students[dbuser.countStudents - 1].marks[i] = { 0 };
+			cin >> various;
 		}
-
-		//dbuser.students[dbuser.countStudents].user.login = (DBUsers*)malloc(/*dbuser.students[dbuser.countStudents].user.login,*/ (maxlen + 1) * sizeof(DBUsers));
-		cout << "Введите логин: "; scanf_s("%s", &dbuser.students[dbuser.countStudents].user.login);
-		/*while (!isCorrectInput)
+		if (various == 1)
 		{
-			scanf_s("%c", &dbuser.students[dbuser.countStudents].user.login);
-		}*/
-		//dbuser.students[dbuser.countStudents].user.password = (char*)malloc(/*dbuser.students[dbuser.countStudents].user.password, */ sizeof(char) * (maxlen + 1));
-		cout << "Введите пароль: "; scanf_s("%s", &dbuser.students[dbuser.countStudents].user.password);
-		/*while (!isCorrectInput)
-		{
-			scanf_s("%c", &dbuser.students[dbuser.countStudents].user.password);
-		}*/
-		cout << "Введите Фамилию: "; scanf_s("%s", &dbuser.students[dbuser.countStudents].firstName);
-		/*while (!isCorrectInput)
-		{
-			scanf_s("%c", &dbuser.students[dbuser.countStudents].firstName);
-		}*/
-		cout << "Введите Имя: "; scanf_s("%s", &dbuser.students[dbuser.countStudents].lastName);
-		/*while (!isCorrectInput)
-		{
-			scanf_s("%c", &dbuser.students[dbuser.countStudents].lastName);
-		}*/
-
-		cout << "1 - Добавление нового студента\n0 - Выход\nВведите номер желаемой операции: ";
-		cin >> various;
-
-		while (!isCorrectInput())
-		{
+			dbuser.countStudents += 1;
+			dbuser.students = (Student*)realloc(dbuser.students, sizeof(Student) * dbuser.countStudents);
+			//add
+			cout << "Введите логин: "; dbuser.students[dbuser.countStudents - 1].user.login = getConsoleString();
+			cout << "Введите пароль: "; dbuser.students[dbuser.countStudents - 1].user.password = getConsoleString();
+			cout << "Введите Фамилию: "; dbuser.students[dbuser.countStudents - 1].firstName = getConsoleString();
+			cout << "Введите Имя: "; dbuser.students[dbuser.countStudents - 1].lastName = getConsoleString();
+			for (int i = 0; i < 8; i++)
+			{
+				dbuser.students[dbuser.countStudents - 1].marks[i] = 0;
+			}
+			cout << "1 - Добавление нового студента\n0 - Выход\nВведите номер желаемой операции: ";
 			cin >> various;
 		}
 	} while (various != 0);
@@ -57,7 +33,7 @@ int del_student(DBUsers& dbuser)
 {
 	int various = 1;
 	cout << "1 -  Удаление студента\n0 - Выход\nВведите номер желаемой операции: ";
-	while (!isCorrectInput())
+	while (!isCorrectInput)
 	{
 		cin >> various;
 	}
@@ -65,15 +41,12 @@ int del_student(DBUsers& dbuser)
 	do
 	{
 		int del = 0;
-		
 		for (int i = 0; i < dbuser.countStudents; i++)
 		{
 			cout << i + 1 << " " << dbuser.students[i].lastName << " " << dbuser.students[i].firstName << endl;
 
 		}
-		cout << "Введите номер студента, которого желаете удалить: "; 
-		cin >> del;
-
+		cout << "Введите номер студента, которого желаете удалить: "; cin >> del;
 		for (int i = del; i < dbuser.countStudents - 1; i++)
 		{
 			dbuser.students[i].firstName = dbuser.students[i + 1].firstName;
@@ -85,10 +58,6 @@ int del_student(DBUsers& dbuser)
 			for (int j = 0; j < 8; j++)
 				dbuser.students[i].marks[j] = dbuser.students[i].marks[j];
 		}
-
-		dbuser.countStudents--;
-		free()
-
 		//добавить очистку последнего типочка и проверки
 		cout << "Измененный список студентов: ";
 		for (int i = 0; i < dbuser.countStudents; i++)
@@ -106,7 +75,7 @@ int del_student(DBUsers& dbuser)
 }
 
 
-int changeProgress_student(DBUsers & use, DBQuestion & question)
+int changeProgress_student(DBUsers& use, DBQuestion& question)
 {
 	int changeMark = 0;
 	int chooseStudent = 0, chooseTheme = 0;
@@ -131,7 +100,7 @@ int changeProgress_student(DBUsers & use, DBQuestion & question)
 	chooseStudent--;
 	for (int i = 0; i < 8; i++)
 	{
-		cout<< i+1 << " - " << question.themes[i].name << "\t" << use.students[chooseStudent].marks[i] << endl;
+		cout << i + 1 << " - " << question.themes[i].name << "\t" << use.students[chooseStudent].marks[i] << endl;
 	}
 	cout << "Выберите тему для изменения прогресса: "; cin >> chooseTheme;
 	while (!isCorrectInput())
@@ -163,15 +132,15 @@ int changeProgress_student(DBUsers & use, DBQuestion & question)
 	use.students[chooseStudent].marks[chooseTheme] = changeMark;
 	return 1;
 }
-void outputStudents(DBUsers & use, DBQuestion& question)
+void outputStudents(DBUsers& use, DBQuestion& question)
 {
 	int chooseTheme = 0, chooseTheme1 = 0;
-	do{
-	cout << "1 - По всем темам\n2 - По конкретной теме\n3 - Только итоговый тест\n4 - Только средний балл\n0 - Выход\nВыберете вариант вывода: "; cin >> chooseTheme;
-	while (!isCorrectInput())
-	{
-		cin >> chooseTheme;
-	}
+	do {
+		cout << "1 - По всем темам\n2 - По конкретной теме\n3 - Только итоговый тест\n4 - Только средний балл\n0 - Выход\nВыберете вариант вывода: "; cin >> chooseTheme;
+		while (!isCorrectInput())
+		{
+			cin >> chooseTheme;
+		}
 		if (chooseTheme == 1)
 		{
 			//all them
@@ -190,7 +159,7 @@ void outputStudents(DBUsers & use, DBQuestion& question)
 			//currThme
 			for (int i = 0; i < 8; i++)
 			{
-				cout<< i+1 << " - " << question.themes[i].name << endl;
+				cout << i + 1 << " - " << question.themes[i].name << endl;
 			}
 
 			cout << "Введите тему для вывода оценки студентов:";
@@ -232,7 +201,7 @@ void outputStudents(DBUsers & use, DBQuestion& question)
 				cout << use.students[i].lastName << " " << use.students[i].firstName << " " << use.students[i].averageMark << endl;
 			}
 		}
-		else if(chooseTheme < 0 && chooseTheme > 4)
+		else if (chooseTheme < 0 && chooseTheme > 4)
 		{
 			cout << "Некорректный ввод. Введите вариант вывода:"; cin >> chooseTheme;
 			while (!isCorrectInput())
@@ -242,7 +211,7 @@ void outputStudents(DBUsers & use, DBQuestion& question)
 		}
 	} while (chooseTheme != 0);
 }
-void Filtr(DBUsers& use, DBQuestion & question)
+void Filtr(DBUsers& use, DBQuestion& question)
 {
 	double mark_choice = 0, num_out = 0;
 	int num_theme = 0;
@@ -279,7 +248,7 @@ void Filtr(DBUsers& use, DBQuestion & question)
 					if (use.students[i].marks[j] == mark_choice)
 					{
 						cout << use.students[i].lastName << " " << use.students[i].firstName << endl;
-						cout << question.themes[j].name <<endl << "Оценка: " << use.students[i].marks[j] << endl;
+						cout << question.themes[j].name << endl << "Оценка: " << use.students[i].marks[j] << endl;
 						cnt++;
 					}
 				}
@@ -298,7 +267,7 @@ void Filtr(DBUsers& use, DBQuestion & question)
 			}
 			while (mark_choice > 5 || mark_choice < 2)
 			{
-				cout << "Оценка введена некорректно. Введите нужную оценку для поиска: "; 
+				cout << "Оценка введена некорректно. Введите нужную оценку для поиска: ";
 				cin >> mark_choice;
 				while (!isCorrectInput())
 				{
@@ -409,121 +378,169 @@ void Filtr(DBUsers& use, DBQuestion & question)
 		}
 	} while (num_out != 0);
 }
-
 void sortMarks(DBUsers& use, DBQuestion& dbq)
 {
-	int sortChoice=0;
-	do
-	{	
-		cout << "Выберите критерий сортировки:\n";
-		cout << "1. По конкретной теме\n";
-		cout << "2. По итоговому тесту\n";
-		cout << "3. По среднему баллу\n";
-		cout << "0.Выход\n";
-
-		while (!isCorrectInput())
+	int sortChoice;
+	cout << "Выберите критерий сортировки:\n";
+	cout << "1. По конкретной теме\n";
+	cout << "2. По итоговому тесту\n";
+	cout << "3. По среднему баллу\n";
+	cin >> sortChoice;
+	switch (sortChoice)
+	{
+	case 1:
+		int themeChoice;
+		cout << "Выберите тему для сортировки:\n";
+		for (int i = 0; i < dbq.countThemes; i++)
 		{
-			cin >> sortChoice;
-		}	
+			cout << i + 1 << ". " << dbq.themes[i].name << endl;
+		}
+		cin >> themeChoice;
 
-		switch (sortChoice)
+
+		// Сортировка по выбранной теме
+		for (int i = 0; i < use.countStudents; i++)
 		{
-		case 1:
-		{
-			int themeChoice;
-			cout << "Выберите тему для сортировки:\n";
-			for (int i = 0; i < dbq.countThemes; i++)
+			for (int j = 0; j < 8; j++)
 			{
-				cout << i + 1 << ". " << dbq.themes[i].name << endl;
-			}
-			while (!isCorrectInput())
-			{
-				cin >> themeChoice;
-			}
-
-
-			// Сортировка по выбранной теме
-			for (int i = 0; i < use.countStudents; i++)
-			{
-				for (int j = 0; j < 8; j++)
+				if (j == themeChoice - 1)
 				{
-					if (j == themeChoice - 1)
+					for (int k = j + 1; k < 8; k++)
 					{
-						for (int k = j + 1; k < 8; k++)
+						if (use.students[i].marks[j] < use.students[i].marks[k])
 						{
-							if (use.students[i].marks[j] < use.students[i].marks[k])
-							{
-								swap(use.students[i].marks[j], use.students[i].marks[k]);
-							}
+							swap(use.students[i].marks[j], use.students[i].marks[k]);
 						}
 					}
 				}
 			}
+		}
 
-			// Вывод отсортированных оценок по теме
-			for (int i = 0; i < use.countStudents; i++)
-			{
-				Student& st = use.students[i];
-				cout << st.lastName << " " << st.firstName << ": " << st.marks[themeChoice - 1] << endl;
-			}
-		}break;
-
-		case 2:
+		// Вывод отсортированных оценок по теме
+		for (int i = 0; i < use.countStudents; i++)
 		{
-			// Сортировка по итоговому тесту
-			for (int i = 0; i < use.countStudents; i++)
+			Student& st = use.students[i];
+			cout << st.lastName << " " << st.firstName << ": " << st.marks[themeChoice - 1] << endl;
+		}
+		break;
+
+	case 2:
+		// Сортировка по итоговому тесту
+		for (int i = 0; i < use.countStudents; i++)
+		{
+			for (int j = i + 1; j < use.countStudents; j++)
 			{
-				for (int j = i + 1; j < use.countStudents; j++)
+				if (use.students[i].finalMark < use.students[j].finalMark)
 				{
-					if (use.students[i].finalMark < use.students[j].finalMark)
-					{
-						swap(use.students[i], use.students[j]);
-					}
+					swap(use.students[i], use.students[j]);
 				}
 			}
+		}
 
-			// Вывод отсортированных оценок по итоговому тесту
-			for (int i = 0; i < use.countStudents; i++)
-			{
-				Student& st = use.students[i];
-				cout << st.lastName << " " << st.firstName << ": " << st.finalMark << endl;
-			}
-		}break;
-
-		case 3:
+		// Вывод отсортированных оценок по итоговому тесту
+		for (int i = 0; i < use.countStudents; i++)
 		{
-			// Сортировка по среднему баллу
-			for (int i = 0; i < use.countStudents; i++)
+			Student& st = use.students[i];
+			cout << st.lastName << " " << st.firstName << ": " << st.finalMark << endl;
+		}
+		break;
+
+	case 3:
+		// Сортировка по среднему баллу
+		for (int i = 0; i < use.countStudents; i++)
+		{
+			for (int j = i + 1; j < use.countStudents; j++)
 			{
-				for (int j = i + 1; j < use.countStudents; j++)
-				{
-					if (use.students[i].averageMark < use.students[j].averageMark) {
-						swap(use.students[i], use.students[j]);
-					}
+				if (use.students[i].averageMark < use.students[j].averageMark) {
+					swap(use.students[i], use.students[j]);
 				}
 			}
+		}
 
-			// Вывод отсортированных оценок
-			for (int i = 0; i < use.countStudents; i++)
-			{
-				Student& st = use.students[i];
-				cout << st.lastName << " " << st.firstName << ": " << st.averageMark << endl;
-			}
-		}break;
-
-		default:
+		// Вывод отсортированных оценок
+		for (int i = 0; i < use.countStudents; i++)
 		{
-			cout << "Неправильный выбор критерия сортировки. Введите номер желаемого критерия:";
-			cin >> sortChoice;
+			Student& st = use.students[i];
+			cout << st.lastName << " " << st.firstName << ": " << st.averageMark << endl;
+		}
+		break;
+
+	default:
+		cout << "Неправильный выбор критерия сортировки\n";
+		break;
+	}
+}
+int add_qoestion(DBQuestion& quse)
+{
+	int num_theme, quit = 1, true_answer;
+	do {
+		for (int i = 0; i < 8; i++)
+		{
+			cout << i + 1 << " - " << quse.themes[i].name << endl;
+		}
+		cout << "Введите номер желаемой темы для добавления вопроса: "; cin >> num_theme;
+		while (!isCorrectInput())
+		{
+			cin >> num_theme;
+		}
+		while (num_theme > 8 || num_theme < 1)
+		{
+			cout << "Такой темы нет. Введите номер желаемой темы: "; cin >> num_theme;
 			while (!isCorrectInput())
 			{
-				cin >> sortChoice;
+				cin >> num_theme;
 			}
 		}
-			
+		num_theme--;
+		quse.themes[num_theme].countQuestions++;
+		quse.themes[num_theme].questions = (Question*)realloc(quse.themes[num_theme].questions, sizeof(Question) * quse.themes[num_theme].countQuestions);
+		cout << "Введите текст нового вопроса: ";  quse.themes[num_theme].questions[quse.themes[num_theme].countQuestions - 1].text = getConsoleString();
+		for (int j = 0; j < 4; j++)
+		{
+			cout << "Введите " << j + 1 << " вариант ответа:"; quse.themes[num_theme].questions[quse.themes[num_theme].countQuestions - 1].answers[j].text = getConsoleString(); cout << endl;
 		}
-	} while (sortChoice!=0);
+		cout << "Введите номер правильного ответа: "; cin >> true_answer;
+		while (!isCorrectInput())
+		{
+			cin >> true_answer;
+		}
+		while (true_answer < 1 || true_answer > 4)
+		{
+			cout << "Такого варианта ответа нет. Введите номер правильного ответа: "; cin >> true_answer;
+			while (!isCorrectInput())
+			{
+				cin >> true_answer;
+			}
+		}
+		true_answer--;
+		quse.themes[num_theme].questions[quse.themes[num_theme].countQuestions - 1].rightAnswer = true_answer;
+		cout << "1 - Добавить вопрос\n0 - Выход\nВведите номер желаемого действия: "; cin >> quit;
+		while (!isCorrectInput())
+		{
+			cin >> quit;
+		}
+		while (quit != 1 && quit != 0)
+		{
+			cout << "Ошибка. Введите номер желаемого действия: "; cin >> quit;
+			while (!isCorrectInput())
+			{
+				cin >> quit;
+			}
+		}
+	} while (quit != 0);
+	return 1;
 }
+
+int del_question(DBQuestion& quse)
+{
+	return 0;
+}
+
+int change_qustion(DBQuestion& quse)
+{
+	return 0;
+}
+
 void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 {
 
@@ -552,19 +569,19 @@ void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 				case 1:
 				{
 					//delete
-					cout << " ";
+					del_question(question);
 				}
 				break;
 				case 2:
 				{
 					//add
-					cout << " ";
+					add_qoestion(question);
 				}
 				break;
 				case 3:
 				{
 					//change
-					cout << " ";
+					change_qustion(question);
 				}
 				break;
 				case 0:
@@ -671,5 +688,5 @@ void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 			}
 		}
 		}
-	}while (choice != 0);
+	} while (choice != 0);
 }
