@@ -65,6 +65,7 @@ int del_student(DBUsers& dbuser)
 	do
 	{
 		int del = 0;
+		
 		for (int i = 0; i < dbuser.countStudents; i++)
 		{
 			cout << i + 1 << " " << dbuser.students[i].lastName << " " << dbuser.students[i].firstName << endl;
@@ -86,7 +87,7 @@ int del_student(DBUsers& dbuser)
 		}
 
 		dbuser.countStudents--;
-		// free()
+		free()
 
 		//добавить очистку последнего типочка и проверки
 		cout << "Измененный список студентов: ";
