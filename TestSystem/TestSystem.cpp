@@ -20,6 +20,8 @@ int main()
 		return 0;
 	}
 
+	printDBs(users, questions);
+
 	while (state != EXIT)
 	{
 		switch (state)
@@ -64,6 +66,17 @@ int inLogin(STATE& state, DBUsers& users, int& id) {
 	
 	while (!exit)
 	{
+		clearScreen();
+		printf_s("¬войти в систему (y/n): ");
+		
+		char c = 0;
+		if ((c = getchar()) != 'y') {
+			state = EXIT;
+			return 1;
+		} 
+
+		clearScreen();
+
 		printf_s("¬ведите логин: ");
 		user.login = getConsoleString();
 

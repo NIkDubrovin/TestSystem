@@ -878,3 +878,19 @@ void printBuffer(const char* buf, int size, const char* type) {
 void debug(const char* s) {
 	printf_s("\n\nERROR: %s\n", s);
 }
+
+void freeStudent(const Student& student) {
+	free(student.user.login);
+	free(student.user.password);
+	free(student.firstName);
+	free(student.lastName);
+}
+
+void freeQuestion(const Question& q) {
+	free(q.text);
+	if(q.answers != nullptr)
+		for (int i = 0; i < 4; i++)
+		{
+			free(q.answers[i].text);
+		}
+}

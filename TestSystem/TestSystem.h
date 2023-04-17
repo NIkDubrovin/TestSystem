@@ -83,7 +83,8 @@ int DBsToBuffers(char** bufQuests, int* sizeQuests, char** bufUsers, int* sizeUs
 int writeDBsFromBuffers(const char* fileNameUsers, char* bufUsers, int sizeBufUsers, const DBUsers& users, const char* fileNameQuests, char* bufQuests, int sizeBufQuests, const DBQuestion& questions);
 void printBuffer(const char* buf, int size, const char* type);
 int sizesDBs(int* sizeDBUsers, int* sizeDBQues, DBQuestion& questions, DBUsers& users);
-
+void freeStudent(const Student&);
+void freeQuestion(const Question&);
 
 // MENU  FUNCTIONS
 
