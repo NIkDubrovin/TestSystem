@@ -524,49 +524,53 @@ int add_qoestion(DBQuestion& quse)
 	do {
 		for (int i = 0; i < 8; i++)
 		{
-			cout << i + 1 << " - " << quse.themes[i].name << endl;
+			cout << i << " - " << quse.themes[i].name << endl;
 		}
-		cout << "Введите номер желаемой темы для добавления вопроса: "; cin >> num_theme;
-		while (!isCorrectInput())
+
+		cout << "Введите номер желаемой темы для добавления вопроса: "; 
+
+		do 
 		{
 			cin >> num_theme;
-		}
-		while (num_theme > 8 || num_theme < 1)
-		{
-			cout << "Такой темы нет. Введите номер желаемой темы: "; cin >> num_theme;
-			while (!isCorrectInput())
-			{
-				cin >> num_theme;
+			if (num_theme > 7 || num_theme < 0) {
+				cout << "Такой темы нет. Введите номер желаемой темы: ";
 			}
-		}
-		num_theme--;
-		quse.themes[num_theme].countQuestions++;
-		quse.themes[num_theme].questions = (Question*)realloc(quse.themes[num_theme].questions, sizeof(Question) * quse.themes[num_theme].countQuestions);
-		cout << "Введите текст нового вопроса: ";  quse.themes[num_theme].questions[quse.themes[num_theme].countQuestions - 1].text = getConsoleString();
+		} while (!isCorrectInput() || num_theme > 7 || num_theme < 0);
+
+		Theme& theme = quse.themes[num_theme];
+		theme.countQuestions++;
+		theme.questions = (Question*)realloc(theme.questions, sizeof(Question) * theme.countQuestions);
+
+		cout << "Введите текст нового вопроса: "; 
+		theme.questions[theme.countQuestions - 1].text = getConsoleString();
+
 		for (int j = 0; j < 4; j++)
 		{
-			cout << "Введите " << j + 1 << " вариант ответа:"; quse.themes[num_theme].questions[quse.themes[num_theme].countQuestions - 1].answers[j].text = getConsoleString(); cout << endl;
+			cout << "Введите " << j + 1<< " вариант ответа:"; 
+			theme.questions[theme.countQuestions - 1].answers[j].text = getConsoleString(); 
 		}
-		cout << "Введите номер правильного ответа: "; cin >> true_answer;
-		while (!isCorrectInput())
+
+		cout << "Введите номер правильного ответа (1 - 4): "; 
+
+		do 
 		{
 			cin >> true_answer;
-		}
-		while (true_answer < 1 || true_answer > 4)
-		{
-			cout << "Такого варианта ответа нет. Введите номер правильного ответа: "; cin >> true_answer;
-			while (!isCorrectInput())
-			{
-				cin >> true_answer;
-			}
-		}
+			if(true_answer < 1 || true_answer > 4)
+				cout << "Такого варианта ответа нет. Введите номер правильного ответа: ";
+
+		} while (!isCorrectInput() || true_answer < 1 || true_answer > 4);
+
 		true_answer--;
-		quse.themes[num_theme].questions[quse.themes[num_theme].countQuestions - 1].rightAnswer = true_answer;
-		cout << "1 - Добавить вопрос\n0 - Выход\nВведите номер желаемого действия: "; cin >> quit;
+		theme.questions[theme.countQuestions - 1].rightAnswer = true_answer;
+
+		cout << "1 - Добавить вопрос\n0 - Выход\nВведите номер желаемого действия: "; 
+		
+		cin >> quit;
 		while (!isCorrectInput())
 		{
 			cin >> quit;
 		}
+
 		while (quit != 1 && quit != 0)
 		{
 			cout << "Ошибка. Введите номер желаемого действия: "; cin >> quit;
@@ -588,71 +592,73 @@ int del_question(DBQuestion& quse)
 		cout << "Список вопросов по темам:\n";
 		for (int i = 0; i < 8; i++)
 		{
-			cout << i + 1 << quse.themes[i].name << endl;
-			for (int j = 0; j < quse.themes[i].countQuestions; j++)
-			{
-				cout << "\t\t" << j + 1 << ". " << quse.themes[i].questions[j].text << endl;
-			}
-			cout << endl;
-
+			cout << i << " : " << quse.themes[i].name << endl;
 		}
-		cout << "Введите номер желаемой темы для удаления вопроса: "; cin >> theme_num;
-		while (!isCorrectInput())
+
+		cout << "Введите номер желаемой темы для удаления вопроса: "; 
+		do 
 		{
 			cin >> theme_num;
-		}
-		while (theme_num > 8 || theme_num < 1)
+			if(theme_num > 7 || theme_num < 0)
+				cout << "Такой темы нет. Введите номер желаемой темы: ";
+		} while (!isCorrectInput() || theme_num > 7 || theme_num < 0);
+
+		Theme& theme = quse.themes[theme_num];
+
+		cout << "Вопросы выбранной темы: " << endl;
+
+		for (int j = 0; j < theme.countQuestions; j++)
 		{
-			cout << "Такой темы нет. Введите номер желаемой темы: "; cin >> theme_num;
-			while (!isCorrectInput())
-			{
-				cin >> theme_num;
-			}
+			cout << "\t" << j << ". " << theme.questions[j].text << endl;
 		}
+		cout << endl;
+		
 		cout << "Введите номер вопроса который хотите удалить: ";
-		cin >> que_num;
-		while (!isCorrectInput())
+		do 
 		{
 			cin >> que_num;
-		}
-		/*while (que_num > quse.themes[quse.countThemes].countQuestions || que_num < 0)
-		{
-			cout << "Введен не существующий номер вопроса\nВведите корректный номер вопроса: "; cin >> que_num;*/
-			while (!isCorrectInput())
-			{
-				cin >> que_num;
-			}
-		//}
+			if(que_num > theme.countQuestions - 1 || que_num < 0)
+				cout << "Введен не существующий номер вопроса\nВведите корректный номер вопроса: ";
 
-		theme_num--; que_num--;
+		} while (!isCorrectInput() || que_num > theme.countQuestions - 1 || que_num < 0);
 
-		for (int i = 0; i < quse.themes[theme_num].countQuestions; i++)
+		for (int i = que_num; i < theme.countQuestions - 1; i++)
 		{
-			quse.themes[theme_num].questions[i].text = quse.themes[theme_num].questions[i + 1].text;
+			Question& curQuest = theme.questions[i];
+			Question& nextQuest = theme.questions[i + 1];
+
+			freeQuestion(curQuest);
+
+			curQuest.text = nextQuest.text;
+
 			for (int j = 0; j < 4; j++)
 			{
-				quse.themes[theme_num].questions[i].answers[j] = quse.themes[theme_num].questions[i + 1].answers[j];
+				curQuest.answers[j] = nextQuest.answers[j];
 			}
-			quse.themes[theme_num].questions[i].rightAnswer = quse.themes[theme_num].questions[i + 1].rightAnswer;
+
+			curQuest.rightAnswer = nextQuest.rightAnswer;
 		}
 
-		quse.themes[theme_num].countQuestions--;
-		/*quse.themes[theme_num].questions[quse.themes[theme_num].countQuestions] = 
-			(DBQuestion*)realloc(quse.themes[theme_num].questions[quse.themes[theme_num].countQuestions], sizeof(DBQuestion) * (quse.themes[theme_num].countQuestions-1));*/
-		cout << "1 - Удалить вопрос\n0 - Выход\nВведите номер желаемого действия: "; cin >> quit;
-		while (!isCorrectInput())
+		theme.countQuestions--;
+
+		Question* newArr = (Question*)malloc(sizeof(Question) * theme.countQuestions);
+		memcpy_s(newArr, sizeof(Question) * (theme.countQuestions),
+			theme.questions, sizeof(Question) * theme.countQuestions);
+
+		free(theme.questions);
+		theme.questions = newArr;
+		
+		cout << "Вопрос удален.\n1 - Удалить вопрос\n0 - Выход\nВведите номер желаемого действия: "; 
+		do
 		{
 			cin >> quit;
-		}
-		while (quit != 1 && quit != 0)
-		{
-			cout << "Ошибка. Введите номер желаемого действия: "; cin >> quit;
-			while (!isCorrectInput())
-			{
-				cin >> quit;
-			}
-		}
+			if(quit != 1 && quit != 0)
+				cout << "Ошибка. Введите номер желаемого действия: ";
+
+		} while (!isCorrectInput() || quit != 1 && quit != 0);
+		
 	} while (quit != 0);
+
 	return 1;
 }
 
@@ -665,84 +671,78 @@ int change_qustion(DBQuestion& quse)
 		cout << "Список вопросов по темам:\n";
 		for (int i = 0; i < 8; i++)
 		{
-			cout << i + 1 << quse.themes[i].name << endl;
-			for (int j = 0; j < quse.themes[i].countQuestions; j++)
-			{
-				cout << "\t\t" << j + 1 << ". " << quse.themes[i].questions[j].text << endl;
-			}
-			cout << endl;
-
+			cout << i << " : " << quse.themes[i].name << endl;
 		}
-		cout << "Введите номер темы, вопрос которой хотите изменить: ";
-		cin >> theme_num;
-		while (!isCorrectInput())
+
+		cout << "Введите номер желаемой темы для удаления вопроса: ";
+		do
 		{
 			cin >> theme_num;
-		}
-		if (theme_num > 8 || theme_num < 0)
+			if (theme_num > 7 || theme_num < 0)
+				cout << "Такой темы нет. Введите номер желаемой темы: ";
+		} while (!isCorrectInput() || theme_num > 7 || theme_num < 0);
+
+		Theme& theme = quse.themes[theme_num];
+
+		cout << "Вопросы выбранной темы: " << endl;
+
+		for (int j = 0; j < theme.countQuestions; j++)
 		{
-			cout << "Введен не существующий номер темы\nВведите корректный номер темы: "; cin >> theme_num;
-			while (!isCorrectInput())
-			{
-				cin >> theme_num;
-			}
+			cout << "\t" << j << ". " << theme.questions[j].text << endl;
 		}
-		cout << "Введите номер вопроса которой хотите изменить: ";
-		cin >> que_num;
-		while (!isCorrectInput())
+		cout << endl;
+
+		cout << "Введите номер вопроса который хотите удалить: ";
+		do
 		{
 			cin >> que_num;
-		}
-//		while (que_num > quse.themes[quse.countThemes].countQuestions || que_num < 0)
-//		{
-			//cout << "Введен не существующий номер вопроса\nВведите корректный номер вопроса: "; cin >> que_num;
-			while (!isCorrectInput())
-			{
-				cin >> que_num;
-			}
-//		}
+			if (que_num > theme.countQuestions - 1 || que_num < 0)
+				cout << "Введен не существующий номер вопроса\nВведите корректный номер вопроса: ";
 
-		theme_num--; que_num--;
-		char quest;
-		cout << quse.themes[theme_num].name << "\n\n" << quse.themes[theme_num].questions[que_num].text;
+		} while (!isCorrectInput() || que_num > theme.countQuestions - 1 || que_num < 0);
 
-	
-		cout << "Введите текст нового вопроса: ";  //quest = getConsoleString();
-		cin >> quse.themes[theme_num].questions[que_num].text;
+		Question& quest = theme.questions[que_num];
+		cout << "Выбранный вопрос: " << endl;
+		cout << quest.text << endl;
 		for (int j = 0; j < 4; j++)
 		{
-			cout << "Введите " << j + 1 << " вариант ответа:"; quse.themes[theme_num].questions[que_num].answers[j].text = getConsoleString(); cout << endl;
+			cout << j + 1 << " : " << quest.answers[j].text << endl;
 		}
-		cout << "Введите номер правильного ответа: "; cin >> true_answer;
-		while (!isCorrectInput())
+	
+		cout << "\nВведите текст нового вопроса: ";  
+
+		free(quest.text);
+		quest.text = getConsoleString();
+		
+		for (int j = 0; j < 4; j++)
+		{
+			cout << "Введите " << j + 1 << " вариант ответа:"; 
+			quest.answers[j].text = getConsoleString(); 
+		}
+
+		cout << "Введите номер правильного ответа (1 - 4): "; 
+		do 
 		{
 			cin >> true_answer;
-		}
-		while (true_answer < 1 || true_answer > 4)
-		{
-			cout << "Такого варианта ответа нет. Введите номер правильного ответа: "; cin >> true_answer;
-			while (!isCorrectInput())
-			{
-				cin >> true_answer;
-			}
-		}
+			if(true_answer < 1 || true_answer > 4)
+				cout << "Такого варианта ответа нет. Введите номер правильного ответа: ";
+
+		} while (!isCorrectInput() || true_answer < 1 || true_answer > 4);
+	
 		true_answer--;
-		quse.themes[theme_num].questions[que_num].rightAnswer = true_answer;
+		quest.rightAnswer = true_answer;
 		
-		cout << "1 - Изменить вопрос\n0 - Выход\nВведите номер желаемого действия: "; cin >> quit;
-		while (!isCorrectInput())
+		cout << "1 - Изменить вопрос\n0 - Выход\nВведите номер желаемого действия: "; 
+		do
 		{
 			cin >> quit;
-		}
-		while (quit != 1 && quit != 0)
-		{
-			cout << "Ошибка. Введите номер желаемого действия: "; cin >> quit;
-			while (!isCorrectInput())
-			{
-				cin >> quit;
-			}
-		}
+			if (quit != 1 && quit != 0)
+				cout << "Ошибка. Введите номер желаемого действия: ";
+
+		} while (!isCorrectInput() || quit != 1 && quit != 0);
+
 	} while (quit != 0);
+
 	return 1;
 }
 
