@@ -97,10 +97,10 @@ int inLogin(STATE& state, DBUsers& users, int& id);
 int editQuestions(DBQuestion* qs);
 int workDBStudents(DBUsers* dbUsers);
 
-int StudentMenu(DBUsers& users, DBQuestion& questions);
+int StudentMenu(DBUsers& users, DBQuestion& questions,int id);
 int trainingTheme(DBQuestion* questions);
-int testTheme(Student* student, DBQuestion* questions);
-int finalTest(Student* student, DBQuestion* questions);
+int testTheme(Student* student, DBQuestion* questions,int id);
+int finalTest(Student* student, DBQuestion* questions,int id);
 
 char* getConsoleString();
 void clearScreen();

@@ -56,6 +56,7 @@ int trainingTheme(DBQuestion& DBquestions)
 			cin >> selecttheme;
 		} while (!isCorrectInput());
 	} while (selecttheme < 1 || selecttheme >8);
+	selecttheme -= 1;
 	cout << "Выбранная тема: \n" << DBquestions.themes[selecttheme].name << endl;
 	
 	int answer = 0; int complete = 0;
@@ -85,7 +86,7 @@ int trainingTheme(DBQuestion& DBquestions)
 	return 1;
 }
 
-int TestTheme(DBUsers& users,DBQuestion& DBquestions)
+int TestTheme(DBUsers& users,DBQuestion& DBquestions,int id)
 {
 	srand(time(NULL));
 	int UniqNumbers[lenmas];
@@ -161,11 +162,11 @@ int TestTheme(DBUsers& users,DBQuestion& DBquestions)
 		lastres = 2; 
 		cout << endl << "Ваша оценка 2\n";
 	}
-	users.students->marks[selecttheme] = lastres;
+	users.students[id].marks[selecttheme] = lastres;
 	return 1;
 }
 
-int finalTest(DBUsers& users, DBQuestion& DBquestions)
+int finalTest(DBUsers& users, DBQuestion& DBquestions,int id)
 {
 	randQuestForFinalTest randomfintest[50];
 	srand(time(NULL));
@@ -236,16 +237,17 @@ int finalTest(DBUsers& users, DBQuestion& DBquestions)
 		lastres = 2;
 		cout << endl << "Ваша оценка 2\n";
 	}
-	users.students->finalMark = lastres;
+	users.students[id].finalMark = lastres;
 
 	return 0;
 }
 
-int StudentMenu(DBUsers& users,DBQuestion& questions)
+int StudentMenu(DBUsers& users,DBQuestion& questions,int id)
 {
 	int k = 0;
 	
 	int choose = -2;
+	do{
 	do
 	{
 		do {
@@ -266,16 +268,17 @@ int StudentMenu(DBUsers& users,DBQuestion& questions)
 	}break;
 	case 2:
 	{
-		TestTheme(users,questions);
+		TestTheme(users,questions,id);
 
 	}break;
 	case 3:
 	{
-		finalTest(users, questions);
+		finalTest(users, questions,id);
 	}break;
 	default:
 	{
 		return 0;
 	}break;
 	}
+	} while (choose != 4);
 }

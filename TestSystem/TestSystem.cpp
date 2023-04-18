@@ -38,7 +38,7 @@ int main()
 			state = MENU;
 			break;
 		case STUDENT:
-			StudentMenu(users, questions);
+			StudentMenu(users, questions,id);
 			state = MENU;
 			clearScreen();
 			break;
