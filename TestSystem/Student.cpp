@@ -272,7 +272,7 @@ int StudentMenu(DBUsers& users,DBQuestion& questions)
 	case 3:
 	{
 		finalTest(users, questions);
-	}
+	}break;
 	default:
 	{
 		return 0;

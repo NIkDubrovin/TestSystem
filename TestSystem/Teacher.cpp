@@ -148,14 +148,14 @@ int changeProgress_student(DBUsers& use, DBQuestion& question)
 	cout << "Выберите тему для изменения прогресса: "; 
 	do
 	{
-		cin >> chooseStudent;
+		cin >> chooseTheme;
 	} while (!isCorrectInput());
 	while (chooseTheme > 8 || chooseTheme < 1)
 	{
 		cout << "Такой темы нет. Выберите тему для изменения прогресса: "; 
 		do
 		{
-			cin >> chooseStudent;
+			cin >> chooseTheme;
 		} while (!isCorrectInput());
 	}
 	chooseTheme--;
@@ -169,7 +169,7 @@ int changeProgress_student(DBUsers& use, DBQuestion& question)
 		cout << "Оценки ставятся в 5 - ти бальной системе. Введите новую оценку: "; 
 		do
 		{
-			cin >> chooseStudent;
+			cin >> changeMark;
 		} while (!isCorrectInput());
 	}
 	use.students[chooseStudent].marks[chooseTheme] = changeMark;
@@ -443,9 +443,6 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 			cout << i + 1 << ". " << dbq.themes[i].name << endl;
 		}
 		cin >> themeChoice;
-
-
-		// Сортировка по выбранной теме
 		for (int i = 0; i < use.countStudents; i++)
 		{
 			for (int j = 0; j < 8; j++)
@@ -462,8 +459,6 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 				}
 			}
 		}
-
-		// Вывод отсортированных оценок по теме
 		for (int i = 0; i < use.countStudents; i++)
 		{
 			Student& st = use.students[i];
@@ -472,7 +467,6 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 		break;
 
 	case 2:
-		// Сортировка по итоговому тесту
 		for (int i = 0; i < use.countStudents; i++)
 		{
 			for (int j = i + 1; j < use.countStudents; j++)
@@ -483,8 +477,6 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 				}
 			}
 		}
-
-		// Вывод отсортированных оценок по итоговому тесту
 		for (int i = 0; i < use.countStudents; i++)
 		{
 			Student& st = use.students[i];
@@ -493,7 +485,6 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 		break;
 
 	case 3:
-		// Сортировка по среднему баллу
 		for (int i = 0; i < use.countStudents; i++)
 		{
 			for (int j = i + 1; j < use.countStudents; j++)
@@ -503,8 +494,6 @@ void sortMarks(DBUsers& use, DBQuestion& dbq)
 				}
 			}
 		}
-
-		// Вывод отсортированных оценок
 		for (int i = 0; i < use.countStudents; i++)
 		{
 			Student& st = use.students[i];
@@ -761,6 +750,7 @@ void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 		{
 		case 1:
 		{
+			clearScreen();
 			//Question
 			do {
 				std::cout << "Редактирование вопросов.\n1 - Удаление вопросов\n2 - Добавление вопросов\n3 - Изменение вопросов\n0 - Выход\nВведите номер желаемого действия: ";
@@ -774,23 +764,27 @@ void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 				case 1:
 				{
 					//delete
+					clearScreen();
 					del_question(question);
 				}
 				break;
 				case 2:
 				{
 					//add
+					clearScreen();
 					add_qoestion(question);
 				}
 				break;
 				case 3:
 				{
 					//change
+					clearScreen();
 					change_qustion(question);
 				}
 				break;
 				case 0:
 				{
+					clearScreen();
 					break;
 				}
 				default:
@@ -802,11 +796,14 @@ void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 					}
 				}
 				}
+				if(choice1 == 0)
+					clearScreen();
 			} while (choice1 != 0);
 		}
 		break;
 		case 2:
 		{
+			clearScreen();
 			do {
 				//DB_Students
 				std::cout << "Работа со списком студентов.\n1 - Удаление и регистрация студентов\n2 - Изменение прогресса студентов\n3 - Вывод списка студентов с оценками\n4 - Фильтрация по оценкам\n5 - Сортировка по оценкам\n0 - Выход\nВведите номер желаемого действия: ";
@@ -819,6 +816,7 @@ void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 				{
 				case 1:
 				{
+					clearScreen();
 					do {
 						cout << "1 - Добавление студента\n2 - Удаление студента\n0 - Выход\nВведите номер желаемого действия"; cin >> stud_add;
 						while (!isCorrectInput())
@@ -827,10 +825,12 @@ void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 						}
 						if (stud_add == 1)
 						{
+							clearScreen();
 							add_student(Dbusers);
 						}
 						else if (stud_add == 2)
 						{
+							clearScreen();
 							del_student(Dbusers);
 						}
 						else if (stud_add < 0 || stud_add > 2)
@@ -841,33 +841,40 @@ void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 								cin >> stud_add;
 							}
 						}
+						if (stud_add == 0)
+							clearScreen();
 					} while (stud_add != 0);
 				}
 				break;
 				case 2:
 				{
+					clearScreen();
 					//changeProgress
 					changeProgress_student(Dbusers, question);
 				}
 				break;
 				case 3:
 				{
+					clearScreen();
 					//output spisok students
 					outputStudents(Dbusers, question);
 				}
 				break;
 				case 4:
 				{	//Фильтрация
+					clearScreen();
 					Filtr(Dbusers, question);
 				}
 				break;
 				case 5:
 				{
+					clearScreen();
 					sortMarks(Dbusers, question);
 				}
 				break;
 				case 0:
-					break;
+				{clearScreen();
+				break; }
 				default:
 				{
 					cout << "Некорректный ввод. Введите номер желаемого действия:"; cin >> choice2;
@@ -882,6 +889,7 @@ void TeacherMain(DBUsers& Dbusers, DBQuestion& question)
 		break;
 		case 0:
 		{
+			clearScreen();
 			break;
 		}
 		default:
