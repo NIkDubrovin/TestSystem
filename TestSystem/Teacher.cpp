@@ -385,6 +385,7 @@ void Filtr(DBUsers& use, DBQuestion& question)
 		}
 		if (num_out == 4)
 		{
+			mark_choice = (double)mark_choice;
 			cout << "¬ведите нужную оценку дл€ поиска: ";
 			cin >> mark_choice;
 			while (!isCorrectInput())
@@ -402,7 +403,6 @@ void Filtr(DBUsers& use, DBQuestion& question)
 			}
 			for (int i = 0; i < use.countStudents; i++)
 			{
-				cout << use.students[i].lastName << " " << use.students[i].firstName;
 				if (use.students[i].averageMark == mark_choice)
 				{
 					cout << use.students[i].lastName << " " << use.students[i].firstName << endl;
