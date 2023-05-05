@@ -134,8 +134,8 @@ int TestTheme(DBUsers& users,DBQuestion& DBquestions,int id)
 	for (int n = 0; n < k; n++)
 	{
 		
-		cout << "Вопрос №" << n +1<< " :" << endl << DBquestions.themes[selecttheme].questions[wrong[k]].text<<endl;
-		cout << "Верный ответ: " << DBquestions.themes[selecttheme].questions[wrong[k]].rightAnswer+1<<endl;
+		cout << "Вопрос №" << n +1<< " :" << endl << DBquestions.themes[selecttheme].questions[wrong[n]].text<<endl;
+		cout << "Верный ответ: " << DBquestions.themes[selecttheme].questions[wrong[n]].rightAnswer+1<<endl;
 	}
 	double res = double(complete) / 10;
 	int lastres;
